@@ -1,0 +1,269 @@
+{% set placements = {top: 'Top', bottom: 'Bottom', left: 'Left', right: 'Right'} %}
+{% set alignments = {start: 'Start', center: 'Center', end: 'End'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-popover" aria-hidden="true"></span>Popover and dropdown</h2>
+
+<h3>Classes</h3>
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.popover-content + [preset] + [size]</code></dd>
+    <dt>Presets</dt>
+    <dd><code>popover-dropdown</code>, <code>popover-tooltip</code></dd>
+    <dt>Sizes</dt>
+    <dd><code>popover-sm</code>, medium (default), <code>popover-lg</code></dd>
+    <dt>Arrow</dt>
+    <dd><code>popover-arrow</code> (optional, positioned by the controller)</dd>
+    <dt>Menu</dt>
+    <dd><code>dropdown-menu</code>, <code>dropdown-item</code>, <code>dropdown-item-shortcut</code>, <code>dropdown-separator</code>, <code>dropdown-label</code></dd>
+    <dt>States</dt>
+    <dd><code>active</code> or <code>aria-selected="true"</code>, <code>disabled</code> or <code>aria-disabled="true"</code> on a <code>dropdown-item</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;div class="popover-content popover-tooltip popover-sm" data-popover-target="content"&gt;Hint&lt;/div&gt;</code></dd>
+</dl>
+
+<h3>Stimulus controller</h3>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="popover"</code> on the wrapper</dd>
+    <dt>Targets</dt>
+    <dd><code>trigger</code>, <code>content</code>, <code>arrow</code></dd>
+    <dt>Values</dt>
+    <dd><code>placement</code> top, bottom (default), left, right · <code>alignment</code> start, center (default), end · <code>trigger</code> click (default), hover · <code>offset</code> gap in px (default 8) · <code>flip</code> at the viewport edge (default true)</dd>
+    <dt>Actions</dt>
+    <dd><code>click-&gt;popover#toggle</code> on a click trigger, <code>click-&gt;popover#close</code> on a close button</dd>
+    <dt>Events</dt>
+    <dd><code>popover:opened</code>, <code>popover:closed</code></dd>
+    <dt>Behavior</dt>
+    <dd>Closes on an outside click and on Escape, repositions on scroll and resize</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;div data-controller="popover" data-popover-placement-value="top"&gt;</code></dd>
+</dl>
+
+<h3>Placement</h3>
+<p>Set with <code>data-popover-placement-value</code>. A click trigger needs <code>data-action="click-&gt;popover#toggle"</code>.</p>
+<div class="showcase-demo">
+    {% for placement, label in placements %}
+        <figure>
+            <div data-controller="popover" data-popover-placement-value="{{ placement }}" class="relative inline-block">
+                <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft">{{ label }}</button>
+                <div data-popover-target="content" class="popover-content popover-sm">
+                    <div data-popover-target="arrow" class="popover-arrow"></div>
+                    Placement: {{ placement }}
+                </div>
+            </div>
+            <figcaption><code>placement="{{ placement }}"</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Alignment</h3>
+<p>Set with <code>data-popover-alignment-value</code>. Aligns the popover along the placement axis.</p>
+<div class="showcase-demo">
+    {% for alignment, label in alignments %}
+        <figure>
+            <div data-controller="popover" data-popover-alignment-value="{{ alignment }}" class="relative inline-block">
+                <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft">{{ label }}</button>
+                <div data-popover-target="content" class="popover-content popover-sm">
+                    <div data-popover-target="arrow" class="popover-arrow"></div>
+                    Aligned to {{ alignment }}
+                </div>
+            </div>
+            <figcaption><code>alignment="{{ alignment }}"</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Trigger</h3>
+<p>Set with <code>data-popover-trigger-value</code>. Hover works without an action, click needs one.</p>
+<div class="showcase-demo">
+    <figure>
+        <div data-controller="popover" data-popover-trigger-value="click" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-primary">Click me</button>
+            <div data-popover-target="content" class="popover-content popover-sm">
+                <div data-popover-target="arrow" class="popover-arrow"></div>
+                Click triggered
+            </div>
+        </div>
+        <figcaption><code>trigger="click"</code></figcaption>
+    </figure>
+    <figure>
+        <div data-controller="popover" data-popover-trigger-value="hover" class="relative inline-block">
+            <button data-popover-target="trigger" class="btn btn-outline">Hover me</button>
+            <div data-popover-target="content" class="popover-content popover-tooltip">
+                <div data-popover-target="arrow" class="popover-arrow"></div>
+                Hover triggered
+            </div>
+        </div>
+        <figcaption><code>trigger="hover"</code></figcaption>
+    </figure>
+</div>
+
+<h3>Presets</h3>
+<div class="showcase-demo">
+    <figure>
+        <div data-controller="popover" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft">Default</button>
+            <div data-popover-target="content" class="popover-content popover-sm">
+                <div data-popover-target="arrow" class="popover-arrow"></div>
+                Default style
+            </div>
+        </div>
+        <figcaption><code>.popover-content</code></figcaption>
+    </figure>
+    <figure>
+        <div data-controller="popover" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft">Dropdown</button>
+            <div data-popover-target="content" class="popover-content popover-dropdown">
+                <nav class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Item 1</a>
+                    <a href="#" class="dropdown-item">Item 2</a>
+                </nav>
+            </div>
+        </div>
+        <figcaption><code>.popover-dropdown</code></figcaption>
+    </figure>
+    <figure>
+        <div data-controller="popover" data-popover-trigger-value="hover" class="relative inline-block">
+            <button data-popover-target="trigger" class="btn btn-outline">Tooltip</button>
+            <div data-popover-target="content" class="popover-content popover-tooltip">
+                <div data-popover-target="arrow" class="popover-arrow"></div>
+                Tooltip style
+            </div>
+        </div>
+        <figcaption><code>.popover-tooltip</code></figcaption>
+    </figure>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <div data-controller="popover" class="relative inline-block">
+                <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft{{ size ? ' btn-' ~ size }}">{{ label }}</button>
+                <div data-popover-target="content" class="popover-content{{ size ? ' popover-' ~ size }}">{{ label }} popover</div>
+            </div>
+            <figcaption><code>{{ size ? '.popover-' ~ size : '.popover-content' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h4>Tooltip sizes</h4>
+<p><code>.popover-tooltip</code> has its own, smaller scale.</p>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <div data-controller="popover" data-popover-trigger-value="hover" class="relative inline-block">
+                <button data-popover-target="trigger" class="btn btn-outline{{ size ? ' btn-' ~ size }}">{{ label }}</button>
+                <div data-popover-target="content" class="popover-content popover-tooltip{{ size ? ' popover-' ~ size }}">
+                    <div data-popover-target="arrow" class="popover-arrow"></div>
+                    {{ label }} tooltip
+                </div>
+            </div>
+            <figcaption><code>.popover-tooltip{{ size ? '.popover-' ~ size }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Dropdown menu</h3>
+<p>Combine <code>.popover-dropdown</code> with the menu classes.</p>
+<div class="showcase-demo">
+    <figure>
+        <div data-controller="popover" data-popover-alignment-value="start" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-primary">
+                Dropdown menu
+                {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/chevron-down.svg'}) }}
+            </button>
+            <div data-popover-target="content" class="popover-content popover-dropdown">
+                <nav class="dropdown-menu" role="menu">
+                    <a href="#" class="dropdown-item" role="menuitem">
+                        {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/layout-dashboard.svg'}) }}
+                        Dashboard
+                        <span class="dropdown-item-shortcut">⇧⌘D</span>
+                    </a>
+                    <a href="#" class="dropdown-item" role="menuitem">
+                        {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/settings.svg'}) }}
+                        Settings
+                        <span class="dropdown-item-shortcut">⌘S</span>
+                    </a>
+                    <div class="dropdown-separator"></div>
+                    <span class="dropdown-label">Help</span>
+                    <a href="#" class="dropdown-item" role="menuitem">Documentation</a>
+                    <a href="#" class="dropdown-item" role="menuitem">Support</a>
+                    <a href="#" class="dropdown-item" role="menuitem" aria-disabled="true">API (coming soon)</a>
+                    <div class="dropdown-separator"></div>
+                    <a href="#" class="dropdown-item" role="menuitem">
+                        {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/logout.svg'}) }}
+                        Log out
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <figcaption>Icons, shortcuts, label, disabled item</figcaption>
+    </figure>
+    <figure>
+        <div data-controller="popover" data-popover-alignment-value="end" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-soft btn-circle" aria-label="Account">JD</button>
+            <div data-popover-target="content" class="popover-content popover-dropdown min-w-48">
+                <div class="px-3 py-2">
+                    <strong class="block">John Doe</strong>
+                    <span class="showcase-caption">john@example.com</span>
+                </div>
+                <div class="dropdown-separator"></div>
+                <nav class="dropdown-menu" role="menu">
+                    <a href="#" class="dropdown-item active" role="menuitem">Dashboard</a>
+                    <a href="#" class="dropdown-item" role="menuitem">Account settings</a>
+                    <a href="#" class="dropdown-item" role="menuitem">Billing</a>
+                    <div class="dropdown-separator"></div>
+                    <a href="#" class="dropdown-item text-status-error-solid" role="menuitem">Sign out</a>
+                </nav>
+            </div>
+        </div>
+        <figcaption>Header, active item</figcaption>
+    </figure>
+</div>
+
+<h3>Interactive content</h3>
+<p>Popovers can hold forms and buttons. A button with <code>data-action="click-&gt;popover#close"</code> closes it.</p>
+<div class="showcase-demo">
+    <figure>
+        <div data-controller="popover" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-primary">Edit settings</button>
+            <div data-popover-target="content" class="popover-content w-72">
+                <strong class="block">Dimensions</strong>
+                <span class="showcase-caption">Set the dimensions for the layer.</span>
+                <div class="grid gap-3 my-4">
+                    <label>
+                        <span class="label-text">Width</span>
+                        <input type="text" class="form-input input-sm w-full" value="100%">
+                    </label>
+                    <label>
+                        <span class="label-text">Height</span>
+                        <input type="text" class="form-input input-sm w-full" value="auto">
+                    </label>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button class="btn btn-sm btn-soft" data-action="click->popover#close">Cancel</button>
+                    <button class="btn btn-sm btn-primary">Apply</button>
+                </div>
+            </div>
+        </div>
+        <figcaption>Form</figcaption>
+    </figure>
+    <figure>
+        <div data-controller="popover" class="relative inline-block">
+            <button data-popover-target="trigger" data-action="click->popover#toggle" class="btn btn-error btn-outline">Delete item</button>
+            <div data-popover-target="content" class="popover-content w-64 text-center">
+                <strong class="flex items-center justify-center gap-2">
+                    <span class="flex text-status-error-solid">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/alert-warning.svg'}) }}</span>
+                    Delete this item?
+                </strong>
+                <span class="showcase-caption block mb-4">This action cannot be undone.</span>
+                <div class="flex justify-center gap-2">
+                    <button class="btn btn-sm btn-soft" data-action="click->popover#close">Cancel</button>
+                    <button class="btn btn-sm btn-error">Delete</button>
+                </div>
+            </div>
+        </div>
+        <figcaption>Confirmation</figcaption>
+    </figure>
+</div>

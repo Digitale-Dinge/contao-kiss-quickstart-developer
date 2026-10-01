@@ -1,0 +1,136 @@
+{% set variants = {'': 'Outline', soft: 'Soft'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-textarea" aria-hidden="true"></span>Textarea</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-textarea + [style] + [color] + [size] + [resize] + [state]</code></dd>
+    <dt>Styles</dt>
+    <dd>outline (default), <code>textarea-soft</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>textarea-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>textarea-sm</code>, medium (default), <code>textarea-lg</code></dd>
+    <dt>Labels</dt>
+    <dd><code>label-text</code>, <code>label-required</code>, <code>helper-text</code>, <code>success-text</code>, <code>error-text</code></dd>
+    <dt>Floating label</dt>
+    <dd><code>textarea-floating</code> &gt; <code>form-textarea</code> + <code>textarea-floating-label</code></dd>
+    <dt>Resize</dt>
+    <dd>vertical (default), <code>resize-none</code>, <code>resize-x</code>, <code>resize-both</code></dd>
+    <dt>States</dt>
+    <dd><code>is-valid</code>, <code>is-invalid</code>, <code>disabled</code>, <code>readonly</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;textarea class="form-textarea textarea-primary" placeholder="Enter message"&gt;&lt;/textarea&gt;</code></dd>
+</dl>
+
+<h3>Structure</h3>
+<p>A field is a <code>.label-text</code>, the textarea and an optional <code>.helper-text</code> below it.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-textarea-message">Message</label>
+            <textarea id="showcase-textarea-message" class="form-textarea" placeholder="Type your message"></textarea>
+            <span class="helper-text">Maximum 500 characters.</span>
+        </div>
+        <figcaption><code>.label-text + .form-textarea + .helper-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text label-required" for="showcase-textarea-description">Description</label>
+            <textarea id="showcase-textarea-description" class="form-textarea" placeholder="Describe the issue" required></textarea>
+        </div>
+        <figcaption><code>.label-text.label-required</code></figcaption>
+    </figure>
+</div>
+
+<h3>Styles and colors</h3>
+<p>The color tints the border and the focus ring, <code>.textarea-soft</code> adds a tinted background.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.textarea-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <textarea{{ attrs().addClass('form-textarea min-w-32').addClass('textarea-' ~ style, style).addClass('textarea-' ~ color, color) }} placeholder="{{ label }}" aria-label="{{ label }} {{ color ?: 'default' }}"></textarea>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<p>A size sets the padding, the font size and the minimum height.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <textarea class="form-textarea{{ size ? ' textarea-' ~ size }}" placeholder="{{ label }}" aria-label="{{ label }}"></textarea>
+            <figcaption><code>{{ size ? '.textarea-' ~ size : '.form-textarea' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Floating label</h3>
+<p>The label sits in the first line and moves onto the border on focus or once the field has a value. Set <code>placeholder=" "</code>. The background limitations of the input floating label apply here too.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for color in ['', 'primary'] %}
+        <figure>
+            <div class="textarea-floating">
+                <textarea id="showcase-textarea-floating-{{ color ?: 'default' }}" class="form-textarea{{ color ? ' textarea-' ~ color }}" placeholder=" "></textarea>
+                <label class="textarea-floating-label" for="showcase-textarea-floating-{{ color ?: 'default' }}">Your message</label>
+            </div>
+            <figcaption><code>.textarea-floating{{ color ? ' .textarea-' ~ color }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Resize</h3>
+<p>Textareas resize vertically by default.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for resize, label in {none: 'No resize', x: 'Horizontal', both: 'Both directions'} %}
+        <figure>
+            <textarea class="form-textarea resize-{{ resize }}" placeholder="{{ label }}" aria-label="{{ label }}"></textarea>
+            <figcaption><code>.resize-{{ resize }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-textarea-valid">Bio</label>
+            <textarea id="showcase-textarea-valid" class="form-textarea is-valid">Front-end developer from Berlin.</textarea>
+            <span class="success-text">Looks good.</span>
+        </div>
+        <figcaption><code>.is-valid + .success-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-textarea-invalid">Description</label>
+            <textarea id="showcase-textarea-invalid" class="form-textarea is-invalid" placeholder="Describe the issue"></textarea>
+            <span class="error-text">Description is required.</span>
+        </div>
+        <figcaption><code>.is-invalid + .error-text</code></figcaption>
+    </figure>
+    <figure>
+        <textarea class="form-textarea" placeholder="Disabled" aria-label="Disabled" disabled></textarea>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+    <figure>
+        <textarea class="form-textarea" aria-label="Read only" readonly>Read only</textarea>
+        <figcaption><code>readonly</code></figcaption>
+    </figure>
+</div>

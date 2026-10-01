@@ -1,0 +1,188 @@
+{% set variants = {'': 'Outline', soft: 'Soft'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-select" aria-hidden="true"></span>Select</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-select + [style] + [color] + [size] + [state]</code></dd>
+    <dt>Styles</dt>
+    <dd>outline (default), <code>select-soft</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>select-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>select-sm</code>, medium (default), <code>select-lg</code></dd>
+    <dt>Labels</dt>
+    <dd><code>label-text</code>, <code>label-required</code>, <code>helper-text</code>, <code>success-text</code>, <code>error-text</code></dd>
+    <dt>Floating label</dt>
+    <dd><code>select-floating</code> &gt; <code>form-select</code> + <code>select-floating-label</code></dd>
+    <dt>Icons</dt>
+    <dd><code>select-group</code> + <code>has-icon-left</code> &gt; <code>select-icon</code> (leading only)</dd>
+    <dt>States</dt>
+    <dd><code>is-valid</code>, <code>is-invalid</code>, <code>disabled</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;select class="form-select select-primary select-lg"&gt;…&lt;/select&gt;</code></dd>
+</dl>
+
+<h3>Structure</h3>
+<p>A field is a <code>.label-text</code>, the select and an optional <code>.helper-text</code> below it. An empty first option is shown in the placeholder color.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-select-category">Category</label>
+            <select id="showcase-select-category" class="form-select">
+                <option value="">Choose an option</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+            <span class="helper-text">Select your preferred category.</span>
+        </div>
+        <figcaption><code>.label-text + .form-select + .helper-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text label-required" for="showcase-select-country">Country</label>
+            <select id="showcase-select-country" class="form-select" required>
+                <option value="">Select a country</option>
+                <option value="de">Germany</option>
+                <option value="at">Austria</option>
+            </select>
+        </div>
+        <figcaption><code>.label-text.label-required</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-select-technology">Technology</label>
+            <select id="showcase-select-technology" class="form-select">
+                <option value="">Choose a technology</option>
+                <optgroup label="Frontend">
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="js">JavaScript</option>
+                </optgroup>
+                <optgroup label="Backend">
+                    <option value="php">PHP</option>
+                    <option value="python">Python</option>
+                    <option value="node">Node.js</option>
+                </optgroup>
+            </select>
+        </div>
+        <figcaption><code>&lt;optgroup label="…"&gt;</code></figcaption>
+    </figure>
+</div>
+
+<h3>Styles and colors</h3>
+<p>The color tints the border and the focus ring, <code>.select-soft</code> adds a tinted background.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.select-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <select{{ attrs().addClass('form-select min-w-32').addClass('select-' ~ style, style).addClass('select-' ~ color, color) }} aria-label="{{ label }} {{ color ?: 'default' }}">
+                                <option>{{ label }}</option>
+                                <option>Option 1</option>
+                            </select>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <select class="form-select{{ size ? ' select-' ~ size }}" aria-label="{{ label }}">
+                <option>{{ label }}</option>
+                <option>Option 1</option>
+            </select>
+            <figcaption><code>{{ size ? '.select-' ~ size : '.form-select' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Floating label</h3>
+<p>Unlike the input, the label always stays floated, since a select always shows a value. The background limitations of the input floating label apply here too.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for color in ['', 'primary'] %}
+        <figure>
+            <div class="select-floating">
+                <select id="showcase-select-floating-{{ color ?: 'default' }}" class="form-select{{ color ? ' select-' ~ color }}">
+                    <option value="">Choose an option</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                </select>
+                <label class="select-floating-label" for="showcase-select-floating-{{ color ?: 'default' }}">Category</label>
+            </div>
+            <figcaption><code>.select-floating{{ color ? ' .select-' ~ color }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Icons</h3>
+<p>Wrap the select in <code>.select-group.has-icon-left</code> with a <code>.select-icon</code> before it. The icon spacing follows the size. There is no trailing icon, that side holds the arrow.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <div class="select-group has-icon-left">
+                <span class="select-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/pin.svg'}) }}</span>
+                <select class="form-select{{ size ? ' select-' ~ size }}" aria-label="Location">
+                    <option value="">Select location</option>
+                    <option value="1">Berlin</option>
+                    <option value="2">Munich</option>
+                    <option value="3">Hamburg</option>
+                </select>
+            </div>
+            <figcaption><code>.select-group.has-icon-left{{ size ? ' .select-' ~ size }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-select-valid">Plan</label>
+            <select id="showcase-select-valid" class="form-select is-valid">
+                <option value="">Choose</option>
+                <option value="1" selected>Basic</option>
+                <option value="2">Pro</option>
+            </select>
+            <span class="success-text">Selection confirmed.</span>
+        </div>
+        <figcaption><code>.is-valid + .success-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-select-invalid">Plan</label>
+            <select id="showcase-select-invalid" class="form-select is-invalid">
+                <option value="">Choose</option>
+                <option value="1">Basic</option>
+                <option value="2">Pro</option>
+            </select>
+            <span class="error-text">Please make a selection.</span>
+        </div>
+        <figcaption><code>.is-invalid + .error-text</code></figcaption>
+    </figure>
+    <figure>
+        <select class="form-select" aria-label="Disabled" disabled>
+            <option value="">Disabled</option>
+            <option value="1">Option 1</option>
+        </select>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+</div>

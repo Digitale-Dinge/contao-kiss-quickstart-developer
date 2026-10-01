@@ -1,0 +1,77 @@
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-radio" aria-hidden="true"></span>Radio</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-radio + [color] + [size]</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>radio-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>radio-sm</code>, medium (default), <code>radio-lg</code></dd>
+    <dt>States</dt>
+    <dd><code>checked</code>, <code>disabled</code></dd>
+    <dt>Markup</dt>
+    <dd><code>span &gt; input + label</code>, as Contao renders every option</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;span&gt;&lt;input type="radio" name="plan" id="plan-basic" class="form-radio radio-primary"&gt;&lt;label for="plan-basic"&gt;Basic&lt;/label&gt;&lt;/span&gt;</code></dd>
+</dl>
+
+<h3>Colors</h3>
+<p>The color sets the ring and the dot.</p>
+<div class="showcase-demo">
+    {% for color in ['']|merge(colors) %}
+        <figure>
+            <span>
+                <input type="radio" name="radio-color-{{ color ?: 'default' }}" id="radio-color-{{ color ?: 'default' }}" class="form-radio{{ color ? ' radio-' ~ color }}" checked>
+                <label for="radio-color-{{ color ?: 'default' }}">{{ color ? color|capitalize : 'Default' }}</label>
+            </span>
+            <figcaption><code>{{ color ? '.radio-' ~ color : '.form-radio' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Sizes</h3>
+<p>The label next to the radio scales with it.</p>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <span>
+                <input type="radio" name="radio-sizes" id="radio-size-{{ size ?: 'default' }}" class="form-radio radio-primary{{ size ? ' radio-' ~ size }}"{{ not size ? ' checked' }}>
+                <label for="radio-size-{{ size ?: 'default' }}">{{ label }}</label>
+            </span>
+            <figcaption><code>{{ size ? '.radio-' ~ size : '.form-radio' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<p>Radios with the same <code>name</code> form a group, checking one unchecks the others.</p>
+<div class="showcase-demo">
+    <figure>
+        <span>
+            <input type="radio" name="radio-state" id="radio-state-unchecked" class="form-radio radio-primary">
+            <label for="radio-state-unchecked">Unchecked</label>
+        </span>
+        <figcaption>default</figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="radio" name="radio-state" id="radio-state-checked" class="form-radio radio-primary" checked>
+            <label for="radio-state-checked">Checked</label>
+        </span>
+        <figcaption><code>checked</code></figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="radio" name="radio-disabled" id="radio-state-disabled" class="form-radio radio-primary" disabled>
+            <label for="radio-state-disabled">Disabled</label>
+        </span>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="radio" name="radio-disabled" id="radio-state-disabled-checked" class="form-radio radio-primary" checked disabled>
+            <label for="radio-state-disabled-checked">Disabled checked</label>
+        </span>
+        <figcaption><code>checked disabled</code></figcaption>
+    </figure>
+</div>

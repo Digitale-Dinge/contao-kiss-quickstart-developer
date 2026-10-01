@@ -1,0 +1,166 @@
+{% set layouts = {'input-number': 'Buttons right', 'input-number-center': 'Centered'} %}
+{% set variants = {'': 'Outline', soft: 'Soft'} %}
+
+{% set decrement %}
+    <button type="button" class="input-number-btn" data-action="click->input-number#decrement" aria-label="Decrease">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" /></svg>
+    </button>
+{% endset %}
+
+{% set increment %}
+    <button type="button" class="input-number-btn" data-action="click->input-number#increment" aria-label="Increase">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+    </button>
+{% endset %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-input-number" aria-hidden="true"></span>Input number</h2>
+
+<h3>Classes</h3>
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>[layout] &gt; .form-input + [style] + [color] + [size]</code>, plus two <code>.input-number-btn</code></dd>
+    <dt>Layouts</dt>
+    <dd><code>input-number</code> (buttons right), <code>input-number-center</code> (buttons on both sides)</dd>
+    <dt>Styles</dt>
+    <dd>outline (default), <code>input-soft</code> on the input</dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>input-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %} on the input, the buttons follow</dd>
+    <dt>Sizes</dt>
+    <dd><code>input-sm</code>, medium (default), <code>input-lg</code> on the input, the buttons follow</dd>
+    <dt>States</dt>
+    <dd><code>disabled</code> on the input and both buttons</dd>
+</dl>
+
+<h3>Stimulus controller</h3>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="input-number"</code> on the layout wrapper</dd>
+    <dt>Target</dt>
+    <dd><code>data-input-number-target="input"</code> on the input</dd>
+    <dt>Actions</dt>
+    <dd><code>click-&gt;input-number#decrement</code> and <code>click-&gt;input-number#increment</code> on the buttons, <code>input-&gt;input-number#inputChanged</code> on the input</dd>
+    <dt>Attributes</dt>
+    <dd><code>min</code>, <code>max</code> and <code>step</code> on the input</dd>
+</dl>
+
+<h3>Layouts</h3>
+<p>The HTML order sets the layout: the buttons follow the input in <code>.input-number</code> and surround it in <code>.input-number-center</code>.</p>
+<div class="showcase-demo">
+    {% for layout, label in layouts %}
+        <figure>
+            <div class="{{ layout }} w-48" data-controller="input-number">
+                {% if layout == 'input-number-center' %}{{ decrement }}{% endif %}
+                <input type="number" class="form-input" data-input-number-target="input" data-action="input->input-number#inputChanged" value="1" min="0" max="100" aria-label="{{ label }}">
+                {% if layout == 'input-number' %}{{ decrement }}{% endif %}
+                {{ increment }}
+            </div>
+            <figcaption><code>.{{ layout }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+<pre class="showcase-code">&lt;div class="input-number" data-controller="input-number"&gt;
+    &lt;input type="number" class="form-input" data-input-number-target="input" data-action="input-&gt;input-number#inputChanged" value="1" min="0" max="100"&gt;
+    &lt;button type="button" class="input-number-btn" data-action="click-&gt;input-number#decrement"&gt;−&lt;/button&gt;
+    &lt;button type="button" class="input-number-btn" data-action="click-&gt;input-number#increment"&gt;+&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="input-number-center" data-controller="input-number"&gt;
+    &lt;button type="button" class="input-number-btn" data-action="click-&gt;input-number#decrement"&gt;−&lt;/button&gt;
+    &lt;input type="number" class="form-input" data-input-number-target="input" data-action="input-&gt;input-number#inputChanged" value="1" min="0" max="100"&gt;
+    &lt;button type="button" class="input-number-btn" data-action="click-&gt;input-number#increment"&gt;+&lt;/button&gt;
+&lt;/div&gt;</pre>
+
+<h3>Styles and colors</h3>
+<p>Style and color classes go on the input, the buttons pick up the color automatically.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Layout</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, style_label in variants %}
+                {% for layout, layout_label in layouts %}
+                    <tr>
+                        <th>{{ layout_label }}, {{ style_label|lower }}<code>.{{ layout }}{{ style ? ' + .input-' ~ style }}</code></th>
+                        {% for color in ['']|merge(colors) %}
+                            <td>
+                                <div class="{{ layout }} w-32" data-controller="input-number">
+                                    {% if layout == 'input-number-center' %}{{ decrement }}{% endif %}
+                                    <input type="number"{{ attrs().addClass('form-input').addClass('input-' ~ style, style).addClass('input-' ~ color, color) }} data-input-number-target="input" data-action="input->input-number#inputChanged" value="5" min="0" max="99" aria-label="{{ color ?: 'default' }}">
+                                    {% if layout == 'input-number' %}{{ decrement }}{% endif %}
+                                    {{ increment }}
+                                </div>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<p>The buttons scale with the size class of the input.</p>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <div class="input-number w-36" data-controller="input-number">
+                <input type="number" class="form-input{{ size ? ' input-' ~ size }}" data-input-number-target="input" data-action="input->input-number#inputChanged" value="5" min="0" max="99" aria-label="{{ label }}">
+                {{ decrement }}
+                {{ increment }}
+            </div>
+            <figcaption><code>{{ size ? '.input-' ~ size : '.form-input' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Min, max and step</h3>
+<p>The controller reads <code>min</code>, <code>max</code> and <code>step</code> from the input and disables a button once its limit is reached.</p>
+<div class="showcase-demo">
+    <figure>
+        <div class="input-number w-40" data-controller="input-number">
+            <input type="number" class="form-input" data-input-number-target="input" data-action="input->input-number#inputChanged" value="0" min="0" max="10" aria-label="0 to 10">
+            {{ decrement }}
+            {{ increment }}
+        </div>
+        <figcaption><code>min="0" max="10"</code></figcaption>
+    </figure>
+    <figure>
+        <div class="input-number-center w-40" data-controller="input-number">
+            {{ decrement }}
+            <input type="number" class="form-input" data-input-number-target="input" data-action="input->input-number#inputChanged" value="10" min="0" max="100" step="5" aria-label="Steps of 5">
+            {{ increment }}
+        </div>
+        <figcaption><code>step="5"</code></figcaption>
+    </figure>
+    <figure>
+        <div class="input-number w-40" data-controller="input-number">
+            <input type="number" class="form-input" data-input-number-target="input" data-action="input->input-number#inputChanged" value="1.5" min="0" max="10" step="0.5" aria-label="Steps of 0.5">
+            {{ decrement }}
+            {{ increment }}
+        </div>
+        <figcaption><code>step="0.5"</code></figcaption>
+    </figure>
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo">
+    <figure>
+        <div class="input-number w-40" data-controller="input-number">
+            <input type="number" class="form-input" data-input-number-target="input" value="5" aria-label="Disabled" disabled>
+            <button type="button" class="input-number-btn" aria-label="Decrease" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" /></svg>
+            </button>
+            <button type="button" class="input-number-btn" aria-label="Increase" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            </button>
+        </div>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+</div>

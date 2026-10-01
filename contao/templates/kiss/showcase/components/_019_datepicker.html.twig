@@ -1,0 +1,44 @@
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-datepicker" aria-hidden="true"></span>Date range picker</h2>
+
+<h3>Overview</h3>
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>[data-controller="date-range-picker"] &gt; input.form-input + input.form-input</code></dd>
+    <dt>Library</dt>
+    <dd>vanillajs-datepicker (<code>DateRangePicker</code>)</dd>
+    <dt>Inputs</dt>
+    <dd>The first two inputs inside the wrapper become the start and the end field</dd>
+    <dt>Behaviour</dt>
+    <dd>The calendar highlights the range between both dates. Past dates are disabled (<code>minDate</code> is today).</dd>
+    <dt>Styles</dt>
+    <dd>The popup uses the library stylesheet. Import <code>vanillajs-datepicker/css/datepicker.css</code> with <code>layer(components)</code> in the project.</dd>
+</dl>
+
+<h3>Date range</h3>
+<div class="showcase-demo showcase-demo-stack">
+    <figure>
+        <div class="grid grid-cols-2 gap-4 max-w-md" data-controller="date-range-picker">
+            <div>
+                <label class="label-text" for="showcase-date-from">From</label>
+                <input type="text" id="showcase-date-from" class="form-input date-from" placeholder="Arrival" autocomplete="off">
+            </div>
+            <div>
+                <label class="label-text" for="showcase-date-to">To</label>
+                <input type="text" id="showcase-date-to" class="form-input date-to" placeholder="Departure" autocomplete="off">
+            </div>
+        </div>
+        <figcaption><code>data-controller="date-range-picker"</code></figcaption>
+    </figure>
+</div>
+<pre class="showcase-code">&lt;div data-controller="date-range-picker"&gt;
+    &lt;input type="text" class="form-input date-from" placeholder="Arrival"&gt;
+    &lt;input type="text" class="form-input date-to" placeholder="Departure"&gt;
+&lt;/div&gt;</pre>
+
+<h3>Stimulus controller</h3>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="date-range-picker"</code> on the wrapper around both inputs</dd>
+    <dt>Values</dt>
+    <dd><code>data-date-range-picker-format-value</code> sets the date format, e.g. <code>yyyy-mm-dd</code>. <code>data-date-range-picker-language-value</code> sets the locale, e.g. <code>de</code>. The page language is the default, English the fallback.</dd>
+</dl>

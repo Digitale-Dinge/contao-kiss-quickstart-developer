@@ -1,0 +1,87 @@
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-checkbox" aria-hidden="true"></span>Checkbox</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-checkbox + [color] + [size]</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>checkbox-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>checkbox-sm</code>, medium (default), <code>checkbox-lg</code></dd>
+    <dt>States</dt>
+    <dd><code>checked</code>, <code>indeterminate</code> (JavaScript), <code>disabled</code></dd>
+    <dt>Markup</dt>
+    <dd><code>span &gt; input + label</code>, as Contao renders every option</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;span&gt;&lt;input type="checkbox" id="terms" class="form-checkbox checkbox-primary"&gt;&lt;label for="terms"&gt;I agree&lt;/label&gt;&lt;/span&gt;</code></dd>
+</dl>
+
+<h3>Colors</h3>
+<p>The color sets the border and fills the box once it is checked.</p>
+<div class="showcase-demo">
+    {% for color in ['']|merge(colors) %}
+        <figure>
+            <span>
+                <input type="checkbox" id="checkbox-color-{{ color ?: 'default' }}" class="form-checkbox{{ color ? ' checkbox-' ~ color }}" checked>
+                <label for="checkbox-color-{{ color ?: 'default' }}">{{ color ? color|capitalize : 'Default' }}</label>
+            </span>
+            <figcaption><code>{{ color ? '.checkbox-' ~ color : '.form-checkbox' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Sizes</h3>
+<p>The label next to the checkbox scales with it.</p>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <span>
+                <input type="checkbox" id="checkbox-size-{{ size ?: 'default' }}" class="form-checkbox checkbox-primary{{ size ? ' checkbox-' ~ size }}" checked>
+                <label for="checkbox-size-{{ size ?: 'default' }}">{{ label }}</label>
+            </span>
+            <figcaption><code>{{ size ? '.checkbox-' ~ size : '.form-checkbox' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<p>Indeterminate is a property, not an attribute. It is set with <code>element.indeterminate = true</code> and shows a line instead of the checkmark.</p>
+<div class="showcase-demo">
+    <figure>
+        <span>
+            <input type="checkbox" id="checkbox-state-unchecked" class="form-checkbox checkbox-primary">
+            <label for="checkbox-state-unchecked">Unchecked</label>
+        </span>
+        <figcaption>default</figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="checkbox" id="checkbox-state-checked" class="form-checkbox checkbox-primary" checked>
+            <label for="checkbox-state-checked">Checked</label>
+        </span>
+        <figcaption><code>checked</code></figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="checkbox" id="checkbox-indeterminate" class="form-checkbox checkbox-primary">
+            <label for="checkbox-indeterminate">Indeterminate</label>
+        </span>
+        <figcaption><code>indeterminate</code></figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="checkbox" id="checkbox-state-disabled" class="form-checkbox checkbox-primary" disabled>
+            <label for="checkbox-state-disabled">Disabled</label>
+        </span>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+    <figure>
+        <span>
+            <input type="checkbox" id="checkbox-state-disabled-checked" class="form-checkbox checkbox-primary" checked disabled>
+            <label for="checkbox-state-disabled-checked">Disabled checked</label>
+        </span>
+        <figcaption><code>checked disabled</code></figcaption>
+    </figure>
+</div>
+<script>
+    document.getElementById('checkbox-indeterminate').indeterminate = true;
+</script>

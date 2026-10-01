@@ -1,0 +1,105 @@
+{% set variants = {'': 'Solid', soft: 'Soft', outline: 'Outline', text: 'Text'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-button" aria-hidden="true"></span>Button</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.btn + [style] + [color] + [size] + [shape] + [state]</code></dd>
+    <dt>Styles</dt>
+    <dd>solid (default), <code>btn-soft</code>, <code>btn-outline</code>, <code>btn-text</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>btn-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>btn-sm</code>, medium (default), <code>btn-lg</code></dd>
+    <dt>Shapes</dt>
+    <dd><code>btn-circle</code>, <code>btn-square</code>, <code>btn-wide</code>, <code>btn-block</code></dd>
+    <dt>States</dt>
+    <dd><code>btn-active</code>, <code>disabled</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;button class="btn btn-primary btn-lg"&gt;Save&lt;/button&gt;</code></dd>
+</dl>
+
+<h3>Styles and colors</h3>
+<p>A style changes how the color is applied. Combine <code>.btn-[style]</code> with <code>.btn-[color]</code>.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.btn-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <button{{ attrs().addClass('btn').addClass('btn-' ~ style, style).addClass('btn-' ~ color, color) }}>{{ label }}</button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <button class="btn btn-primary{{ size ? ' btn-' ~ size }}">{{ label }}</button>
+            <figcaption><code>{{ size ? '.btn-' ~ size : '.btn' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Shapes</h3>
+<p>Circle and square buttons keep a 1:1 ratio in every size. The circle is fully rounded, the square has no rounding.</p>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <button class="btn btn-primary btn-circle{{ size ? ' btn-' ~ size }}" aria-label="Edit">
+                {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/edit.svg'}) }}
+            </button>
+            <figcaption><code>.btn-circle{{ size ? '.btn-' ~ size }}</code></figcaption>
+        </figure>
+    {% endfor %}
+    {% for size, label in sizes %}
+        <figure>
+            <button class="btn btn-secondary btn-square{{ size ? ' btn-' ~ size }}" aria-label="Close">
+                {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/close.svg'}) }}
+            </button>
+            <figcaption><code>.btn-square{{ size ? '.btn-' ~ size }}</code></figcaption>
+        </figure>
+    {% endfor %}
+    <figure>
+        <button class="btn btn-primary btn-wide">Wide</button>
+        <figcaption><code>.btn-wide</code></figcaption>
+    </figure>
+</div>
+<div class="showcase-demo showcase-demo-stack">
+    <figure>
+        <button class="btn btn-primary btn-block">Block</button>
+        <figcaption><code>.btn-block</code></figcaption>
+    </figure>
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo">
+    <figure>
+        <button class="btn btn-primary">Normal</button>
+        <figcaption>default</figcaption>
+    </figure>
+    <figure>
+        <button class="btn btn-primary btn-active">Active</button>
+        <figcaption><code>.btn-active</code></figcaption>
+    </figure>
+    <figure>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+</div>

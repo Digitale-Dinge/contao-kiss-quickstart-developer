@@ -1,0 +1,171 @@
+{% set variants = {'': 'Outline', soft: 'Soft'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-input" aria-hidden="true"></span>Input</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-input + [style] + [color] + [size] + [state]</code></dd>
+    <dt>Styles</dt>
+    <dd>outline (default), <code>input-soft</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>input-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>input-sm</code>, medium (default), <code>input-lg</code></dd>
+    <dt>Labels</dt>
+    <dd><code>label-text</code>, <code>label-required</code>, <code>helper-text</code>, <code>success-text</code>, <code>error-text</code></dd>
+    <dt>Floating label</dt>
+    <dd><code>input-floating</code> &gt; <code>form-input</code> + <code>input-floating-label</code></dd>
+    <dt>Icons</dt>
+    <dd><code>input-group</code> + <code>has-icon-left</code> / <code>has-icon-right</code> &gt; <code>input-icon</code></dd>
+    <dt>States</dt>
+    <dd><code>is-valid</code>, <code>is-invalid</code>, <code>disabled</code>, <code>readonly</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;input class="form-input input-primary input-lg" placeholder="Enter text"&gt;</code></dd>
+</dl>
+
+<h3>Structure</h3>
+<p>A field is a <code>.label-text</code>, the input and an optional <code>.helper-text</code> below it.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-input-email">Email address</label>
+            <input type="email" id="showcase-input-email" class="form-input" placeholder="you@example.com">
+            <span class="helper-text">We will never share your email.</span>
+        </div>
+        <figcaption><code>.label-text + .form-input + .helper-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text label-required" for="showcase-input-name">Full name</label>
+            <input type="text" id="showcase-input-name" class="form-input" placeholder="John Doe" required>
+        </div>
+        <figcaption><code>.label-text.label-required</code></figcaption>
+    </figure>
+</div>
+
+<h3>Styles and colors</h3>
+<p>The color tints the border and the focus ring, <code>.input-soft</code> adds a tinted background.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.input-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <input{{ attrs().addClass('form-input min-w-32').addClass('input-' ~ style, style).addClass('input-' ~ color, color) }} placeholder="{{ label }}" aria-label="{{ label }} {{ color ?: 'default' }}">
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <input class="form-input{{ size ? ' input-' ~ size }}" placeholder="{{ label }}" aria-label="{{ label }}">
+            <figcaption><code>{{ size ? '.input-' ~ size : '.form-input' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Floating label</h3>
+<p>The label sits inside the field and moves onto the border on focus or once the field has a value. Set <code>placeholder=" "</code>, a real placeholder only shows while the field is focused.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for color in ['', 'primary'] %}
+        <figure>
+            <div class="input-floating">
+                <input type="text" id="showcase-input-floating-{{ color ?: 'default' }}" class="form-input{{ color ? ' input-' ~ color }}" placeholder=" ">
+                <label class="input-floating-label" for="showcase-input-floating-{{ color ?: 'default' }}">Full name</label>
+            </div>
+            <figcaption><code>.input-floating{{ color ? ' .input-' ~ color }}</code></figcaption>
+        </figure>
+    {% endfor %}
+    <figure>
+        <div class="input-floating">
+            <input type="email" id="showcase-input-floating-placeholder" class="form-input" placeholder="you@example.com">
+            <label class="input-floating-label" for="showcase-input-floating-placeholder">Email address</label>
+        </div>
+        <figcaption><code>placeholder="you@example.com"</code></figcaption>
+    </figure>
+</div>
+
+<h4>Limitations</h4>
+<p>The floated label covers the border with its own background, <code>bg-neutral-surface-1</code> by default. On another background, add the same class to <code>.input-floating</code>: <code>bg-neutral-surface-{1|2|3}</code>, <code>bg-{primary|secondary|tertiary}-solid</code> or <code>bg-status-{success|warning|error}-solid</code>. Opacity variants such as <code>bg-primary/10</code> are not supported.</p>
+<p>Avoid <code>.input-soft</code> with a floating label: the tinted field and the solid label background do not match.</p>
+<div class="showcase-demo">
+    <figure>
+        <div class="input-floating">
+            <input type="text" id="showcase-input-floating-soft" class="form-input input-soft input-primary" placeholder=" ">
+            <label class="input-floating-label" for="showcase-input-floating-soft">Notice the contrast</label>
+        </div>
+        <figcaption>Avoid: <code>.input-soft</code></figcaption>
+    </figure>
+</div>
+
+<h3>Icons</h3>
+<p>Wrap the input in <code>.input-group</code> with <code>.has-icon-left</code> and/or <code>.has-icon-right</code>. Each icon is a <code>.input-icon</code> before or after the input.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div class="input-group has-icon-left">
+            <span class="input-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/search.svg'}) }}</span>
+            <input type="text" class="form-input" placeholder="Search" aria-label="Search">
+        </div>
+        <figcaption><code>.input-group.has-icon-left</code></figcaption>
+    </figure>
+    <figure>
+        <div class="input-group has-icon-right">
+            <input type="email" class="form-input" placeholder="Email" aria-label="Email">
+            <span class="input-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/envelope.svg'}) }}</span>
+        </div>
+        <figcaption><code>.input-group.has-icon-right</code></figcaption>
+    </figure>
+    <figure>
+        <div class="input-group has-icon-left has-icon-right">
+            <span class="input-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/lock.svg'}) }}</span>
+            <input type="password" class="form-input" placeholder="Password" aria-label="Password">
+            <span class="input-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/check-circle.svg'}) }}</span>
+        </div>
+        <figcaption><code>.has-icon-left.has-icon-right</code></figcaption>
+    </figure>
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-input-valid">Username</label>
+            <input type="text" id="showcase-input-valid" class="form-input is-valid" value="johndoe">
+            <span class="success-text">Username is available.</span>
+        </div>
+        <figcaption><code>.is-valid + .success-text</code></figcaption>
+    </figure>
+    <figure>
+        <div>
+            <label class="label-text" for="showcase-input-invalid">Password</label>
+            <input type="password" id="showcase-input-invalid" class="form-input is-invalid" value="123">
+            <span class="error-text">Use at least 8 characters.</span>
+        </div>
+        <figcaption><code>.is-invalid + .error-text</code></figcaption>
+    </figure>
+    <figure>
+        <input class="form-input" placeholder="Disabled" aria-label="Disabled" disabled>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+    <figure>
+        <input class="form-input" value="Read only" aria-label="Read only" readonly>
+        <figcaption><code>readonly</code></figcaption>
+    </figure>
+</div>

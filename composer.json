@@ -1,0 +1,29 @@
+{
+    "name": "digitaledinge/contao-kiss-quickstart-developer",
+    "description": "Documentation for the contao-kiss quickstart: component showcase and its styles",
+    "type": "contao-bundle",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Digitale Dinge GmbH",
+            "homepage": "https://digitaledin.ge",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "contao/core-bundle": "^5.7",
+        "digitaledinge/contao-kiss": "dev-main"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DigitaleDinge\\ContaoKissQuickstartDeveloper\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "DigitaleDinge\\ContaoKissQuickstartDeveloper\\ContaoManager\\Plugin"
+    }
+}

@@ -1,0 +1,67 @@
+{% set variants = {'': 'Solid', soft: 'Soft', outline: 'Outline', dashed: 'Dashed'} %}
+{% set shapes = {'': 'Rounded', pill: 'Pill', square: 'Square'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-badge" aria-hidden="true"></span>Badge</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.badge + [style] + [color] + [size] + [shape]</code></dd>
+    <dt>Styles</dt>
+    <dd>solid (default), <code>badge-soft</code>, <code>badge-outline</code>, <code>badge-dashed</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>badge-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>badge-sm</code>, medium (default), <code>badge-lg</code></dd>
+    <dt>Shapes</dt>
+    <dd>rounded (default), <code>badge-pill</code>, <code>badge-square</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;span class="badge badge-success badge-soft badge-lg"&gt;Active&lt;/span&gt;</code></dd>
+</dl>
+
+<h3>Styles and colors</h3>
+<p>A style changes how the color is applied. Combine <code>.badge-[style]</code> with <code>.badge-[color]</code>.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.badge-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <span{{ attrs().addClass('badge').addClass('badge-' ~ style, style).addClass('badge-' ~ color, color) }}>{{ label }}</span>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <span class="badge badge-primary{{ size ? ' badge-' ~ size }}">{{ label }}</span>
+            <figcaption><code>{{ size ? '.badge-' ~ size : '.badge' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Shapes</h3>
+<div class="showcase-demo">
+    {% for shape, label in shapes %}
+        <figure>
+            <span class="badge badge-primary{{ shape ? ' badge-' ~ shape }}">{{ label }}</span>
+            <figcaption><code>{{ shape ? '.badge-' ~ shape : '.badge' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>

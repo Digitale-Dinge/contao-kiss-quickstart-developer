@@ -1,0 +1,199 @@
+{% set variants = {'': 'Solid', soft: 'Soft', outline: 'Outline'} %}
+{% set image = 'https://cdn.flyonui.com/fy-assets/components/card/image-5.png' %}
+{% set side_image = 'https://cdn.flyonui.com/fy-assets/components/card/image-7.png' %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-card" aria-hidden="true"></span>Card</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.card + [style] + [color] + [size] + [layout] + [interactive]</code></dd>
+    <dt>Parts</dt>
+    <dd><code>card-media</code> (image or video), <code>card-body</code>, <code>card-title</code> (headline)</dd>
+    <dt>Styles</dt>
+    <dd>solid (default), <code>card-soft</code>, <code>card-outline</code>, <code>card-glass</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>card-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>card-sm</code>, medium (default), <code>card-lg</code></dd>
+    <dt>Layouts</dt>
+    <dd><code>card-reverse</code>, <code>card-side</code>, <code>card-side-reverse</code>, <code>card-media-background</code>, each also as <code>layout-*</code></dd>
+    <dt>Interactive</dt>
+    <dd><code>card-hover</code>, <code>card-grow</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;div class="card card-soft card-primary card-side"&gt;&lt;div class="card-media media"&gt;…&lt;/div&gt;&lt;div class="card-body"&gt;…&lt;/div&gt;&lt;/div&gt;</code></dd>
+</dl>
+
+<h3>Structure</h3>
+<p>An element with <em>Show as card</em> renders a media part, a body with the headline as <code>.card-title</code>, the text and the call to action.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Body only</h4>
+                <div class="rte"><p>The body sets the padding and the gap between its children.</p></div>
+            </div>
+        </div>
+        <figcaption><code>.card-body</code></figcaption>
+    </figure>
+    <figure>
+        <div class="card">
+            <div class="card-media media">
+                <figure><img src="{{ image }}" alt=""></figure>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">With media</h4>
+                <div class="rte"><p>The media runs edge to edge.</p></div>
+            </div>
+        </div>
+        <figcaption><code>.card-media + .card-body</code></figcaption>
+    </figure>
+    <figure>
+        <div class="card">
+            <div class="card-media media">
+                <figure><img src="{{ image }}" alt=""></figure>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">With call to action</h4>
+                <div class="rte"><p>The buttons follow the text.</p></div>
+                <div class="cta-outer inline-flex flex-wrap gap-2 md:gap-4 mt-3">
+                    <a href="#" class="btn btn-primary">Read more</a>
+                </div>
+            </div>
+        </div>
+        <figcaption><code>.card-body &gt; .cta-outer</code></figcaption>
+    </figure>
+</div>
+<pre class="showcase-code">&lt;div class="card media_text responsive-body-sm"&gt;
+    &lt;div class="card-media media-image media"&gt;
+        &lt;figure&gt;&lt;img src="…" alt="…"&gt;&lt;/figure&gt;
+    &lt;/div&gt;
+    &lt;div class="card-body responsive-body-sm text"&gt;
+        &lt;h3 class="card-title responsive-headline-sm"&gt;Headline&lt;/h3&gt;
+        &lt;div class="rte"&gt;&lt;p&gt;Text&lt;/p&gt;&lt;/div&gt;
+        &lt;div class="cta-outer inline-flex flex-wrap gap-2 md:gap-4 mt-3"&gt;
+            &lt;a href="…" class="btn btn-primary"&gt;Read more&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+<h3>Styles and colors</h3>
+<p>A style changes how the color is applied. Combine <code>.card-[style]</code> with <code>.card-[color]</code>.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.card-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <div{{ attrs().addClass(['card', 'card-sm']).addClass('card-' ~ style, style).addClass('card-' ~ color, color) }}>
+                                <div class="card-body">{{ label }}</div>
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h4>Glass</h4>
+<p>Glass blurs what lies behind it, so it needs an image or a colorful background.</p>
+<div class="showcase-demo showcase-demo-stack">
+    <figure>
+        <div class="relative grid gap-4 p-6 overflow-hidden rounded-lg grid-cols-2 sm:grid-cols-4">
+            <img src="{{ image }}" alt="" class="absolute inset-0 size-full object-cover">
+            {% for color in ['']|merge(colors) %}
+                <div class="card card-sm card-glass{{ color ? ' card-' ~ color }}">
+                    <div class="card-body">{{ color ? color|capitalize : 'Default' }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <figcaption><code>.card-glass</code>, <code>.card-glass.card-[color]</code></figcaption>
+    </figure>
+</div>
+
+<h3>Sizes</h3>
+<p>The size sets the padding and the gap of the body.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <div class="card{{ size ? ' card-' ~ size }}">
+                <div class="card-body">
+                    <h4 class="card-title">{{ label }}</h4>
+                    <div class="rte"><p>Padding and gap grow with the size.</p></div>
+                </div>
+            </div>
+            <figcaption><code>{{ size ? '.card-' ~ size : '.card' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Layouts</h3>
+<p>The side and background layouts style the <code>&gt; .media</code> child. Elements that are not shown as a card get the same layouts as <code>.layout-*</code>.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for layout, label in {'': 'Default', reverse: 'Reverse', 'media-background': 'Media background'} %}
+        <figure>
+            <div class="card{{ layout ? ' card-' ~ layout }}">
+                <div class="card-media media">
+                    <figure><img src="{{ image }}" alt=""></figure>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ label }}</h4>
+                    <div class="rte"><p>Media and body in one card.</p></div>
+                </div>
+            </div>
+            <figcaption><code>{{ layout ? '.card-' ~ layout : '.card' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+<div class="showcase-demo showcase-demo-stack">
+    {% for layout, label in {side: 'Side', 'side-reverse': 'Side reverse'} %}
+        <figure>
+            <div class="card card-{{ layout }}">
+                <div class="card-media media">
+                    <figure><img src="{{ side_image }}" alt=""></figure>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ label }}</h4>
+                    <div class="rte"><p>From the small breakpoint on, the media takes two fifths of the width. Below it, the card stacks.</p></div>
+                </div>
+            </div>
+            <figcaption><code>.card-{{ layout }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Interactive</h3>
+<p>For cards that are links. Both effects also apply on keyboard focus and add a focus ring.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for effect, text in {hover: 'The shadow grows.', grow: 'The card scales up.'} %}
+        <figure>
+            <a href="#" class="card card-{{ effect }}">
+                <div class="card-body">
+                    <h4 class="card-title">{{ effect|capitalize }}</h4>
+                    <div class="rte"><p>{{ text }}</p></div>
+                </div>
+            </a>
+            <figcaption><code>.card-{{ effect }}</code></figcaption>
+        </figure>
+    {% endfor %}
+    <figure>
+        <a href="#" class="card card-soft card-primary card-hover">
+            <div class="card-body">
+                <h4 class="card-title">Combined</h4>
+                <div class="rte"><p>Works with every style and color.</p></div>
+            </div>
+        </a>
+        <figcaption><code>.card-soft.card-primary.card-hover</code></figcaption>
+    </figure>
+</div>

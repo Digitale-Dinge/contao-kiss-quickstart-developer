@@ -1,0 +1,102 @@
+{% set variants = {'': 'Solid', soft: 'Soft', outline: 'Outline', dashed: 'Dashed'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-alerts" aria-hidden="true"></span>Alert</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.alert + [style] + [color] + [size]</code></dd>
+    <dt>Sections</dt>
+    <dd><code>alert-icon</code>, <code>alert-content</code>, <code>alert-title</code>, <code>alert-description</code></dd>
+    <dt>Styles</dt>
+    <dd>solid (default), <code>alert-soft</code>, <code>alert-outline</code>, <code>alert-dashed</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>alert-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>alert-sm</code>, medium (default), <code>alert-lg</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;div class="alert alert-success alert-soft alert-lg"&gt;…&lt;/div&gt;</code></dd>
+</dl>
+
+<h3>Structure</h3>
+<p>Content goes in <code>.alert-content</code>. Icon, title and description are optional.</p>
+<div class="showcase-demo showcase-demo-stack">
+    <figure>
+        <div class="alert">
+            <div class="alert-content">A simple alert with content only.</div>
+        </div>
+        <figcaption><code>.alert &gt; .alert-content</code></figcaption>
+    </figure>
+    <figure>
+        <div class="alert">
+            <span class="alert-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/information-circle.svg'}) }}</span>
+            <div class="alert-content">
+                <div class="alert-description">An icon makes the message easier to recognize.</div>
+            </div>
+        </div>
+        <figcaption><code>.alert &gt; .alert-icon + .alert-content &gt; .alert-description</code></figcaption>
+    </figure>
+    <figure>
+        <div class="alert alert-success">
+            <div class="alert-content">
+                <div class="alert-title">Saved</div>
+                <div class="alert-description">Your changes have been saved.</div>
+            </div>
+        </div>
+        <figcaption><code>.alert-content &gt; .alert-title + .alert-description</code></figcaption>
+    </figure>
+    <figure>
+        <div class="alert alert-warning">
+            <span class="alert-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/alert-warning.svg'}) }}</span>
+            <div class="alert-content">
+                <div class="alert-title">Action required</div>
+                <div class="alert-description">Please review your settings before you continue.</div>
+            </div>
+        </div>
+        <figcaption><code>.alert &gt; .alert-icon + .alert-content &gt; .alert-title + .alert-description</code></figcaption>
+    </figure>
+</div>
+
+<h3>Styles and colors</h3>
+<p>A style changes how the color is applied. Combine <code>.alert-[style]</code> with <code>.alert-[color]</code>.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Color</th>
+                {% for style, label in variants %}
+                    <th>{{ label }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for color in ['']|merge(colors) %}
+                <tr>
+                    <th>{{ color ? color|capitalize : 'Default' }}<code>{{ color ? '.alert-' ~ color : '.alert' }}</code></th>
+                    {% for style, label in variants %}
+                        <td>
+                            <div{{ attrs().addClass('alert').addClass('alert-' ~ style, style).addClass('alert-' ~ color, color) }}>
+                                <div class="alert-content">{{ label }}</div>
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo showcase-demo-stack">
+    {% for size, label in sizes %}
+        <figure>
+            <div class="alert alert-soft alert-primary{{ size ? ' alert-' ~ size }}">
+                <span class="alert-icon">{{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/information-circle.svg'}) }}</span>
+                <div class="alert-content">
+                    <div class="alert-title">{{ label }}</div>
+                    <div class="alert-description">Padding, gap, icon and text scale with the size.</div>
+                </div>
+            </div>
+            <figcaption><code>{{ size ? '.alert-' ~ size : '.alert' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>

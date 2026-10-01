@@ -1,0 +1,146 @@
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-range" aria-hidden="true"></span>Range</h2>
+
+<h3>Classes</h3>
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.widget-range + [color] &gt; .form-range + [size] + [fill]</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>range-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}, on the wrapper</dd>
+    <dt>Sizes</dt>
+    <dd><code>range-sm</code>, medium (default), <code>range-lg</code>, on the input</dd>
+    <dt>Fill</dt>
+    <dd><code>range-fill</code> on the input, needs the <code>range</code> controller</dd>
+    <dt>Helper</dt>
+    <dd><code>range-color</code> sets the text color to the wrapper color</dd>
+    <dt>States</dt>
+    <dd><code>disabled</code></dd>
+    <dt>Wrapper</dt>
+    <dd>Contao renders every range field inside <code>.widget.widget-range</code> and puts the field color there. The fill and the value display are siblings of the input and inherit the color from the wrapper.</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;div class="widget-range range-primary"&gt;&lt;input type="range" class="form-range range-lg"&gt;&lt;/div&gt;</code></dd>
+</dl>
+
+<h3>Colors</h3>
+<p>Without the fill, the color shows on the thumb.</p>
+<div class="showcase-demo showcase-demo-grid">
+    {% for color in ['']|merge(colors) %}
+        <figure>
+            <div class="widget-range{{ color ? ' range-' ~ color }}">
+                <input type="range" class="form-range" min="0" max="100" value="50" aria-label="{{ color ? color|capitalize : 'Default' }}">
+            </div>
+            <figcaption><code>{{ color ? '.range-' ~ color : '.widget-range' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo showcase-demo-grid">
+    {% for size, label in sizes %}
+        <figure>
+            <div class="widget-range range-primary">
+                <input type="range" class="form-range{{ size ? ' range-' ~ size }}" min="0" max="100" value="50" aria-label="{{ label }}">
+            </div>
+            <figcaption><code>{{ size ? '.range-' ~ size : '.form-range' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div class="widget-range range-primary">
+            <input type="range" class="form-range" min="0" max="100" value="50" aria-label="Default">
+        </div>
+        <figcaption>default</figcaption>
+    </figure>
+    <figure>
+        <div class="widget-range range-primary">
+            <input type="range" class="form-range" min="0" max="100" value="50" aria-label="Disabled" disabled>
+        </div>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+</div>
+
+<h3>Stimulus controller</h3>
+<p>The <code>range</code> controller fills the track up to the thumb and shows the current value.</p>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="range"</code> on the <code>.widget-range</code> wrapper</dd>
+    <dt>Targets</dt>
+    <dd><code>data-range-target="input"</code> with <code>data-action="input-&gt;range#update"</code> on the input, <code>data-range-target="value"</code> (optional) on the element that shows the value</dd>
+    <dt>Values</dt>
+    <dd><code>data-range-suffix-value</code> is appended to the value, e.g. <code>%</code>. <code>data-range-locale-value</code> sets the number format, the browser locale is the default.</dd>
+    <dt>Fill</dt>
+    <dd>The controller sets <code>--range-fill-percent</code> on the input, <code>.range-fill</code> paints it</dd>
+</dl>
+
+<h4>Fill</h4>
+<div class="showcase-demo showcase-demo-grid">
+    {% for color in ['']|merge(colors) %}
+        <figure>
+            <div class="widget-range{{ color ? ' range-' ~ color }}" data-controller="range">
+                <input type="range" class="form-range range-fill"
+                    data-range-target="input"
+                    data-action="input->range#update"
+                    min="0" max="100" value="60" aria-label="{{ color ? color|capitalize : 'Default' }}">
+            </div>
+            <figcaption><code>{{ color ? '.range-' ~ color ~ ' ' }}.range-fill</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h4>Value display</h4>
+<p><code>.range-color</code> gives the value the wrapper color. The fill is optional, <code>min</code>, <code>max</code> and <code>step</code> work as usual.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div class="widget-range range-secondary" data-controller="range" data-range-suffix-value="°C">
+            <div class="flex justify-between">
+                <label class="label-text" for="range-temperature">Temperature</label>
+                <span class="range-color" data-range-target="value">22</span>
+            </div>
+            <input type="range" id="range-temperature" class="form-range"
+                data-range-target="input"
+                data-action="input->range#update"
+                min="16" max="30" value="22">
+        </div>
+        <figcaption>value only</figcaption>
+    </figure>
+    <figure>
+        <div class="widget-range range-primary" data-controller="range" data-range-suffix-value="%">
+            <div class="flex justify-between">
+                <label class="label-text" for="range-volume">Volume</label>
+                <span class="range-color" data-range-target="value">75</span>
+            </div>
+            <input type="range" id="range-volume" class="form-range range-fill"
+                data-range-target="input"
+                data-action="input->range#update"
+                min="0" max="100" value="75">
+        </div>
+        <figcaption>value and fill</figcaption>
+    </figure>
+    <figure>
+        <div class="widget-range range-success" data-controller="range" data-range-suffix-value=" GB">
+            <div class="flex justify-between">
+                <label class="label-text" for="range-storage">Storage limit</label>
+                <span class="range-color" data-range-target="value">50</span>
+            </div>
+            <input type="range" id="range-storage" class="form-range range-fill range-lg"
+                data-range-target="input"
+                data-action="input->range#update"
+                min="10" max="100" step="10" value="50">
+            <div class="flex justify-between showcase-caption">
+                <span>10 GB</span>
+                <span>100 GB</span>
+            </div>
+        </div>
+        <figcaption><code>step="10"</code></figcaption>
+    </figure>
+</div>
+<pre class="showcase-code">&lt;div class="widget-range range-success" data-controller="range" data-range-suffix-value=" GB"&gt;
+    &lt;label class="label-text" for="storage"&gt;Storage limit&lt;/label&gt;
+    &lt;span class="range-color" data-range-target="value"&gt;50&lt;/span&gt;
+    &lt;input type="range" id="storage" class="form-range range-fill range-lg"
+        data-range-target="input"
+        data-action="input-&gt;range#update"
+        min="10" max="100" step="10" value="50"&gt;
+&lt;/div&gt;</pre>

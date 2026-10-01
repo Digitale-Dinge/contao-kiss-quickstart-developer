@@ -1,0 +1,71 @@
+{% set groups = {
+    Brand: {
+        'bg-primary-solid': 'text-primary-on-solid',
+        'bg-secondary-solid': 'text-secondary-on-solid',
+        'bg-tertiary-solid': 'text-tertiary-on-solid',
+        'bg-quaternary-solid': 'text-quaternary-on-solid',
+    },
+    Status: {
+        'bg-status-success-solid': 'text-status-success-on-solid',
+        'bg-status-warning-solid': 'text-status-warning-on-solid',
+        'bg-status-error-solid': 'text-status-error-on-solid',
+    },
+    Neutral: {
+        'bg-neutral-surface-1': 'text-neutral-on-strong',
+        'bg-neutral-surface-2': 'text-neutral-on-strong',
+        'bg-neutral-surface-3': 'text-neutral-on-strong',
+        'bg-neutral-inverse': 'text-neutral-on-inverse-strong',
+    },
+} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-colors-kiss" aria-hidden="true"></span>Colors</h2>
+
+{% for mode in ['Light', 'Dark'] %}
+    <h3 class="fixed-title-md mt-8 mb-3">{{ mode }}</h3>
+
+    <div class="{{ mode == 'Dark' ? 'dark ' }}bg-neutral-surface-2 rounded p-6">
+        {% for group, swatches in groups %}
+            <h4 class="fixed-title-sm text-neutral-on-strong mb-3">{{ group }}</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 mb-8 last:mb-0">
+                {% for surface, on in swatches %}
+                    <figure class="rounded overflow-hidden border border-neutral-border-light" data-swatch-card>
+                        <div class="{{ surface }} {{ on }} h-28 flex items-center justify-center" data-swatch>
+                            <span class="fixed-title-lg">Aa</span>
+                        </div>
+                        <figcaption class="bg-neutral-surface-1 p-3">
+                            <div class="fixed-label-md text-neutral-on-strong">{{ surface|replace({'bg-': ''}) }}</div>
+                            <div class="fixed-label-sm text-neutral-on-medium tabular-nums" data-hex-bg>–</div>
+
+                            <div class="mt-2 pt-2 border-t border-neutral-border-light">
+                                <div class="fixed-label-sm text-neutral-on-light break-all">{{ on|replace({'text-': ''}) }}</div>
+                                <div class="fixed-label-sm text-neutral-on-medium tabular-nums" data-hex-fg>–</div>
+                            </div>
+                        </figcaption>
+                    </figure>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<script>
+    (() => {
+        const toHex = (value) => {
+            const parts = (value || '').match(/[\d.]+/g);
+            if (!parts) return value || '–';
+
+            const [r, g, b, a] = parts.map(Number);
+            const hex = '#' + [r, g, b].map((n) => n.toString(16).padStart(2, '0')).join('');
+
+            return a === undefined || a === 1 ? hex : hex + Math.round(a * 255).toString(16).padStart(2, '0');
+        };
+
+        for (const swatch of document.querySelectorAll('[data-swatch]')) {
+            const style = getComputedStyle(swatch);
+            const card = swatch.closest('[data-swatch-card]');
+
+            card.querySelector('[data-hex-bg]').textContent = toHex(style.backgroundColor);
+            card.querySelector('[data-hex-fg]').textContent = toHex(style.color);
+        }
+    })();
+</script>

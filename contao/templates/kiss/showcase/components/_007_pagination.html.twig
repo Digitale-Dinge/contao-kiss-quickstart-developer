@@ -1,0 +1,91 @@
+{% macro pagination(modifier) %}
+    <nav class="pagination{{ modifier ? ' ' ~ modifier }}" aria-label="Pagination">
+        <ul>
+            <li><a href="#" aria-label="Previous page">‹</a></li>
+            <li><a href="#">1</a></li>
+            <li><strong aria-current="page">2</strong></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#" aria-label="Next page">›</a></li>
+        </ul>
+    </nav>
+{% endmacro %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-pagination" aria-hidden="true"></span>Pagination</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.pagination + [size] + [shape]</code></dd>
+    <dt>Markup</dt>
+    <dd><code>nav.pagination &gt; [p] + ul &gt; li &gt; (a | strong)</code>, as rendered by the Contao pagination</dd>
+    <dt>Sizes</dt>
+    <dd><code>pagination-sm</code>, medium (default), <code>pagination-lg</code></dd>
+    <dt>Shapes</dt>
+    <dd>rounded (default), <code>pagination-circle</code>, <code>pagination-square</code></dd>
+    <dt>States</dt>
+    <dd>current <code>strong</code>, <code>a[aria-current="page"]</code>, <code>a.active</code>; disabled <code>.disabled</code>, <code>[disabled]</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;nav class="pagination pagination-sm pagination-circle"&gt;…&lt;/nav&gt;</code></dd>
+</dl>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size in sizes|keys %}
+        <figure>
+            {{ _self.pagination(size ? 'pagination-' ~ size) }}
+            <figcaption><code>{{ size ? '.pagination-' ~ size : '.pagination' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Shapes</h3>
+<div class="showcase-demo">
+    {% for shape in ['', 'circle', 'square'] %}
+        <figure>
+            {{ _self.pagination(shape ? 'pagination-' ~ shape) }}
+            <figcaption><code>{{ shape ? '.pagination-' ~ shape : '.pagination' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Icons</h3>
+<div class="showcase-demo">
+    <figure>
+        <nav class="pagination" aria-label="Pagination with icons">
+            <ul>
+                <li>
+                    <a href="#">
+                        {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/chevron-left.svg'}) }}
+                        Previous
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><strong aria-current="page">2</strong></li>
+                <li><a href="#">3</a></li>
+                <li>
+                    <a href="#">
+                        Next
+                        {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/chevron-right.svg'}) }}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <figcaption>icon and label</figcaption>
+    </figure>
+</div>
+
+<h3>States</h3>
+<p>Items use the neutral surface, the current page the primary color.</p>
+<div class="showcase-demo">
+    <figure>
+        <nav class="pagination" aria-label="Pagination on the first page">
+            <ul>
+                <li><a href="#" class="disabled" aria-label="Previous page">‹</a></li>
+                <li><strong aria-current="page">1</strong></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#" aria-label="Next page">›</a></li>
+            </ul>
+        </nav>
+        <figcaption><code>strong</code> current, <code>.disabled</code> previous</figcaption>
+    </figure>
+</div>

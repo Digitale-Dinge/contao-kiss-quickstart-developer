@@ -1,0 +1,159 @@
+{% set sun %}
+    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+{% endset %}
+
+{% set moon %}
+    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+{% endset %}
+
+{% set monitor %}
+    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+{% endset %}
+
+{% set modes = {light: 'Light', dark: 'Dark', system: 'System'} %}
+{% set icons = {light: sun, dark: moon, system: monitor} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-theme-toggle" aria-hidden="true"></span>Theme toggle</h2>
+
+<h3>Toggle template</h3>
+<dl class="showcase-api">
+    <dt>Template</dt>
+    <dd><code>@Contao/kiss_component/theme/_toggle.html.twig</code>, brings its own theme controller</dd>
+    <dt>Variables</dt>
+    <dd><code>size</code> in px (default 24), <code>class</code>, <code>attributes</code>, <code>button_attributes</code></dd>
+    <dt>Block</dt>
+    <dd><code>theme_toggle_icon</code></dd>
+    <dt>Classes</dt>
+    <dd><code>theme-toggle</code> on the button, <code>theme-toggle__icon</code> on the SVG</dd>
+    <dt>Animation</dt>
+    <dd>The sun rays scale down and fade out, a mask slides in to form the crescent, the icon tilts by −45° in dark mode and wiggles on hover, all with spring easing</dd>
+</dl>
+
+<h3>Stimulus controller</h3>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="theme"</code></dd>
+    <dt>Modes</dt>
+    <dd><code>light</code>, <code>dark</code>, <code>system</code> (follows the OS preference, used when nothing is stored)</dd>
+    <dt>Actions</dt>
+    <dd><code>theme#toggle</code> switches between light and dark (and leaves system mode), <code>theme#set</code> sets the mode from the input's <code>value</code></dd>
+    <dt>Targets</dt>
+    <dd><code>toggle</code> (checked in dark mode), <code>radio</code> and <code>select</code> (synced with the mode), <code>lightIcon</code> and <code>darkIcon</code> (shown in their mode)</dd>
+    <dt>Values</dt>
+    <dd><code>storage-key</code>, the <code>localStorage</code> key (default <code>theme</code>)</dd>
+    <dt>Events</dt>
+    <dd><code>theme:change</code> with <code>{ mode, theme, isDark }</code> on the element and the document</dd>
+    <dt>Sync</dt>
+    <dd>Every theme controller on the page stays in sync</dd>
+</dl>
+
+<h3>Sun and moon toggle</h3>
+<p>Include the template, no further setup is needed.</p>
+<div class="showcase-demo">
+    <figure>
+        {{ include('@Contao/kiss_component/theme/_toggle.html.twig') }}
+        <figcaption>default (24)</figcaption>
+    </figure>
+    <figure>
+        {{ include('@Contao/kiss_component/theme/_toggle.html.twig', {size: 32}) }}
+        <figcaption><code>size: 32</code></figcaption>
+    </figure>
+    <figure>
+        {{ include('@Contao/kiss_component/theme/_toggle.html.twig', {size: 48}) }}
+        <figcaption><code>size: 48</code></figcaption>
+    </figure>
+</div>
+<pre class="showcase-code">{% verbatim %}{{ include('@Contao/kiss_component/theme/_toggle.html.twig') }}
+{{ include('@Contao/kiss_component/theme/_toggle.html.twig', {size: 32}) }}
+{{ include('@Contao/kiss_component/theme/_toggle.html.twig', {class: 'my-class'}) }}{% endverbatim %}</pre>
+
+<h3>Light and dark</h3>
+<p>Two-way controls call <code>theme#toggle</code>. A <code>toggle</code> target is checked while dark mode is active.</p>
+<div class="showcase-demo">
+    <figure>
+        <label class="flex items-center gap-3 cursor-pointer" data-controller="theme">
+            {{ sun }}
+            <input type="checkbox" class="form-switch switch-primary" data-theme-target="toggle" data-action="change->theme#toggle" aria-label="Dark mode">
+            {{ moon }}
+        </label>
+        <figcaption><code>.form-switch</code></figcaption>
+    </figure>
+    <figure>
+        <label class="inline-flex items-center gap-3 cursor-pointer" data-controller="theme">
+            <input type="checkbox" class="form-checkbox checkbox-primary" data-theme-target="toggle" data-action="change->theme#toggle">
+            <span>Dark mode</span>
+        </label>
+        <figcaption><code>.form-checkbox</code></figcaption>
+    </figure>
+    <figure>
+        <div data-controller="theme">
+            <button class="btn btn-text" data-action="click->theme#toggle">
+                <span class="inline-flex items-center gap-2" data-theme-target="lightIcon">{{ sun }} Light mode</span>
+                <span class="inline-flex items-center gap-2" style="display: none;" data-theme-target="darkIcon">{{ moon }} Dark mode</span>
+            </button>
+        </div>
+        <figcaption><code>lightIcon</code>, <code>darkIcon</code></figcaption>
+    </figure>
+</div>
+<pre class="showcase-code">&lt;label data-controller="theme"&gt;
+    &lt;input type="checkbox" class="form-switch" data-theme-target="toggle" data-action="change-&gt;theme#toggle"&gt;
+&lt;/label&gt;
+
+&lt;button class="btn" data-controller="theme" data-action="click-&gt;theme#toggle"&gt;
+    &lt;span data-theme-target="lightIcon"&gt;Light mode&lt;/span&gt;
+    &lt;span data-theme-target="darkIcon" style="display: none;"&gt;Dark mode&lt;/span&gt;
+&lt;/button&gt;</pre>
+
+<h3>Light, dark and system</h3>
+<p>Three-way controls add <code>system</code>, which follows the OS preference. They call <code>theme#set</code>, which reads the input's <code>value</code>, and the controller selects the stored mode on page load.</p>
+<div class="showcase-demo showcase-demo-grid">
+    <figure>
+        <div data-controller="theme">
+            <select class="form-select select-primary" data-theme-target="select" data-action="change->theme#set" aria-label="Color mode">
+                {% for mode, label in modes %}
+                    <option value="{{ mode }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <figcaption><code>select</code> target</figcaption>
+    </figure>
+    <figure>
+        <div class="flex flex-col gap-3" data-controller="theme">
+            {% for mode, label in modes %}
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="radio" name="theme-radio" value="{{ mode }}" class="form-radio radio-primary" data-theme-target="radio" data-action="change->theme#set">
+                    <span class="flex items-center gap-2">{{ icons[mode] }} {{ label }}</span>
+                </label>
+            {% endfor %}
+        </div>
+        <figcaption><code>radio</code> target</figcaption>
+    </figure>
+    <figure>
+        <div class="inline-flex self-start rounded-lg overflow-hidden border border-neutral-surface-3" data-controller="theme">
+            {% for mode, label in modes %}
+                <label class="cursor-pointer{{ loop.index == 2 ? ' border-x border-neutral-surface-3' }}">
+                    <input type="radio" name="theme-segment" value="{{ mode }}" class="sr-only peer" data-theme-target="radio" data-action="change->theme#set" aria-label="{{ label }}">
+                    <span class="px-4 py-2 flex items-center justify-center peer-checked:bg-primary-solid peer-checked:text-primary-on-solid hover:bg-neutral-surface-3 transition-colors">{{ icons[mode] }}</span>
+                </label>
+            {% endfor %}
+        </div>
+        <figcaption>Segmented control</figcaption>
+    </figure>
+    <figure>
+        <div class="flex gap-2" data-controller="theme">
+            {% for mode, label in modes %}
+                <label class="cursor-pointer">
+                    <input type="radio" name="theme-pills" value="{{ mode }}" class="sr-only peer" data-theme-target="radio" data-action="change->theme#set">
+                    <span class="btn btn-sm btn-outline peer-checked:bg-primary-solid peer-checked:text-primary-on-solid">{{ label }}</span>
+                </label>
+            {% endfor %}
+        </div>
+        <figcaption>Pill buttons</figcaption>
+    </figure>
+</div>
+<p>The segmented control and the pill buttons hide the radios with <code>.sr-only</code>, which keeps them accessible. <code>.peer</code> on the input lets <code>peer-checked:</code> utilities style the visible sibling.</p>
+
+<h3>Events</h3>
+<pre class="showcase-code">document.addEventListener('theme:change', (event) => {
+    console.log(event.detail); // { mode: 'dark', theme: 'dark', isDark: true }
+});</pre>

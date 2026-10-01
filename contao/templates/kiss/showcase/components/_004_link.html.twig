@@ -1,0 +1,69 @@
+{% set variants = {'': 'Underline', 'underline-hover': 'Hover', 'underline-animate': 'Animate', 'underline-none': 'None'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-link" aria-hidden="true"></span>Link</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.link + [color] + [size] + [underline] + [special]</code></dd>
+    <dt>Colors</dt>
+    <dd>neutral (default), {% for color in colors %}<code>link-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>link-sm</code>, medium (default), <code>link-lg</code></dd>
+    <dt>Underline</dt>
+    <dd>always (default), <code>link-underline-hover</code>, <code>link-underline-animate</code>, <code>link-underline-none</code></dd>
+    <dt>Special</dt>
+    <dd><code>link-external</code>, <code>link-disabled</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;a class="link link-primary link-lg link-underline-animate"&gt;Read more&lt;/a&gt;</code></dd>
+</dl>
+
+<h3>Underline and colors</h3>
+<p>Links change color on hover. <code>.link-underline-none</code> keeps the text neutral until hover.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Underline</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.link-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <a href="#"{{ attrs().addClass('link').addClass('link-' ~ style, style).addClass('link-' ~ color, color) }}>{{ label }}</a>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <a href="#" class="link link-primary{{ size ? ' link-' ~ size }}">{{ label }}</a>
+            <figcaption><code>{{ size ? '.link-' ~ size : '.link' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Special</h3>
+<p><code>.link-external</code> appends an external icon, <code>.link-disabled</code> mutes the link and blocks pointer events.</p>
+<div class="showcase-demo">
+    <figure>
+        <a href="#" class="link link-primary link-external">External</a>
+        <figcaption><code>.link-external</code></figcaption>
+    </figure>
+    <figure>
+        <a href="#" class="link link-disabled">Disabled</a>
+        <figcaption><code>.link-disabled</code></figcaption>
+    </figure>
+</div>

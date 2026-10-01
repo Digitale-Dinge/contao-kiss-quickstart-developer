@@ -1,0 +1,80 @@
+{% set separator %}
+    <li class="breadcrumb-separator" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
+{% endset %}
+
+{% set trail %}
+    <ul data-breadcrumb-target="list">
+        <li><a href="/component-showcase">Home</a></li>
+        {% for item in ['Products', 'Electronics', 'Phones', 'Smartphones'] %}
+            {{ separator }}
+            <li data-breadcrumb-target="item"><a href="/component-showcase">{{ item }}</a></li>
+        {% endfor %}
+        {{ separator }}
+        <li aria-current="page"><a href="/component-showcase">iPhone 15 Pro</a></li>
+    </ul>
+{% endset %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-breadcrumb" aria-hidden="true"></span>Breadcrumb</h2>
+
+<h3>Classes</h3>
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.breadcrumb + [color] + [size]</code></dd>
+    <dt>Base</dt>
+    <dd><code>breadcrumb</code>, or <code>mod_breadcrumb</code> on the Contao module (add modifiers in its CSS class field)</dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>breadcrumb-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}, the hover color of links and the ellipsis (default primary)</dd>
+    <dt>Sizes</dt>
+    <dd><code>breadcrumb-sm</code>, medium (default), <code>breadcrumb-lg</code>, also applied to the collapsed dropdown</dd>
+    <dt>Parts</dt>
+    <dd><code>breadcrumb-separator</code> (SVG or text), <code>breadcrumb-ellipsis</code>, <code>breadcrumb-ellipsis-btn</code> and <code>breadcrumb-dropdown</code> (created by the controller)</dd>
+    <dt>States</dt>
+    <dd><code>aria-current="page"</code> or <code>active</code> on the current <code>li</code></dd>
+    <dt>Example</dt>
+    <dd><code>&lt;nav class="breadcrumb breadcrumb-secondary breadcrumb-sm" aria-label="Breadcrumb"&gt;…&lt;/nav&gt;</code></dd>
+</dl>
+
+<h3>Stimulus controller</h3>
+<dl class="showcase-api">
+    <dt>Controller</dt>
+    <dd><code>data-controller="breadcrumb"</code> on the <code>nav</code></dd>
+    <dt>Targets</dt>
+    <dd><code>list</code> on the <code>ul</code>, <code>item</code> on every collapsible <code>li</code></dd>
+    <dt>Values</dt>
+    <dd><code>max-items</code> collapses when there are more items (default 4), <code>breakpoint</code> collapses below this viewport width in px (default 640)</dd>
+    <dt>Behavior</dt>
+    <dd>Checked once on page load, not on resize. Collapsing hides every <code>item</code> and lists it in a popover behind an ellipsis button. Entries without the target, like home and the current page, stay visible.</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;nav class="breadcrumb" data-controller="breadcrumb" data-breadcrumb-max-items-value="3"&gt;</code></dd>
+</dl>
+
+<h3>Responsive collapse</h3>
+<p>Four items do not exceed the default of four, so this trail is expanded on wide screens and collapsed below 640px. Reload after resizing.</p>
+<div class="showcase-demo showcase-demo-stack">
+    <figure>
+        <nav class="breadcrumb" data-controller="breadcrumb" aria-label="Breadcrumb">{{ trail }}</nav>
+        <figcaption><code>data-controller="breadcrumb"</code></figcaption>
+    </figure>
+</div>
+
+<h3>Colors</h3>
+<p><code>data-breadcrumb-max-items-value="3"</code> forces the collapse. Hover the links and the ellipsis to see the color.</p>
+<div class="showcase-demo showcase-demo-stack">
+    {% for color in colors %}
+        <figure>
+            <nav class="breadcrumb breadcrumb-{{ color }}" data-controller="breadcrumb" data-breadcrumb-max-items-value="3" aria-label="Breadcrumb">{{ trail }}</nav>
+            <figcaption><code>.breadcrumb-{{ color }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>Sizes</h3>
+<p>Open the ellipsis to see the dropdown follow the size.</p>
+<div class="showcase-demo showcase-demo-stack">
+    {% for size, label in sizes %}
+        <figure>
+            <nav class="breadcrumb{{ size ? ' breadcrumb-' ~ size }}" data-controller="breadcrumb" data-breadcrumb-max-items-value="3" aria-label="Breadcrumb">{{ trail }}</nav>
+            <figcaption><code>{{ size ? '.breadcrumb-' ~ size : '.breadcrumb' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>

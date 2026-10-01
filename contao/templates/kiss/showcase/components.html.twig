@@ -1,0 +1,55 @@
+{% set section_inner_attributes = attrs()
+    .addClass([styles.container, styles.padding_top.six, styles.padding_bottom.six, 'showcase-section'])
+    .mergeWith(section_inner_attributes|default)
+%}
+
+{% set sizes = {sm: 'Small', '': 'Default', lg: 'Large'} %}
+{% set colors = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'error'] %}
+
+<section class="showcase-hero">
+    <div class="{{ styles.container }}">
+        <h1>KISS Component System</h1>
+        <p>The base components of the Contao KISS framework with every style, color and size they ship.</p>
+    </div>
+</section>
+
+<section>
+    <div{{ section_inner_attributes }}>
+        <h2>Components</h2>
+        <nav class="showcase-nav">
+            <ol class="showcase-nav-cards">
+                {% for name, component in components %}
+                    {% set key = name|split('_', 3)|last %}
+                    <li>
+                        <a href="#component_section_{{ loop.index }}" class="card card-sm card-hover">
+                            <div class="card-body">
+                                <span class="showcase-nav-icon showcase-icon-{{ key|replace({_: '-'}) }}" aria-hidden="true"></span>
+                                <strong>{{ key }}</strong>
+                                <code>{{ key }}</code>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </div>
+</section>
+
+{% for name, template in components %}
+    {{ include('@Contao/kiss/showcase/_section.html.twig', {
+        section_inner_attributes,
+        index: loop.index,
+    }) }}
+{% endfor %}
+
+<script>
+    document.querySelectorAll('section[id^="component_section_"]').forEach(section => {
+        const title = document.querySelector(`a[href="#${section.id}"] strong`);
+        const headline = section.querySelector('.section-headline');
+
+        if (!headline || !title)
+            return;
+
+        title.textContent = headline.textContent;
+    });
+</script>

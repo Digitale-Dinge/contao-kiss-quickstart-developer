@@ -1,0 +1,93 @@
+{% set variants = {'': 'Solid', outline: 'Outline'} %}
+
+<h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-switch" aria-hidden="true"></span>Switch</h2>
+
+<dl class="showcase-api">
+    <dt>Pattern</dt>
+    <dd><code>.form-switch + [style] + [color] + [size]</code></dd>
+    <dt>Styles</dt>
+    <dd>solid (default), <code>switch-outline</code></dd>
+    <dt>Colors</dt>
+    <dd>{% for color in colors %}<code>switch-{{ color }}</code>{{ not loop.last ? ', ' }}{% endfor %}</dd>
+    <dt>Sizes</dt>
+    <dd><code>switch-sm</code>, medium (default), <code>switch-lg</code></dd>
+    <dt>States</dt>
+    <dd><code>checked</code>, <code>disabled</code></dd>
+    <dt>Markup</dt>
+    <dd><code>label &gt; input + span</code>. Contao form fields render checkboxes, the switch is for custom markup.</dd>
+    <dt>Example</dt>
+    <dd><code>&lt;label&gt;&lt;input type="checkbox" class="form-switch switch-primary"&gt;&lt;span&gt;Notifications&lt;/span&gt;&lt;/label&gt;</code></dd>
+</dl>
+
+<h3>Styles and colors</h3>
+<p>The color fills the track once the switch is on. Outline keeps the track transparent and colors the border and the thumb.</p>
+<div class="showcase-matrix">
+    <table>
+        <thead>
+            <tr>
+                <th>Style</th>
+                <th>Default</th>
+                {% for color in colors %}
+                    <th>{{ color|capitalize }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for style, label in variants %}
+                <tr>
+                    <th>{{ label }}<code>{{ style ? '.switch-' ~ style : 'default' }}</code></th>
+                    {% for color in ['']|merge(colors) %}
+                        <td>
+                            <input type="checkbox"{{ attrs().addClass('form-switch').addClass('switch-' ~ style, style).addClass('switch-' ~ color, color).set('aria-label', label ~ ' ' ~ (color ?: 'default')) }} checked>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Sizes</h3>
+<div class="showcase-demo">
+    {% for size, label in sizes %}
+        <figure>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="form-switch switch-primary{{ size ? ' switch-' ~ size }}" checked>
+                <span>{{ label }}</span>
+            </label>
+            <figcaption><code>{{ size ? '.switch-' ~ size : '.form-switch' }}</code></figcaption>
+        </figure>
+    {% endfor %}
+</div>
+
+<h3>States</h3>
+<div class="showcase-demo">
+    <figure>
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" class="form-switch switch-primary">
+            <span>Off</span>
+        </label>
+        <figcaption>default</figcaption>
+    </figure>
+    <figure>
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" class="form-switch switch-primary" checked>
+            <span>On</span>
+        </label>
+        <figcaption><code>checked</code></figcaption>
+    </figure>
+    <figure>
+        <label class="flex items-center gap-2 cursor-not-allowed">
+            <input type="checkbox" class="form-switch switch-primary" disabled>
+            <span>Disabled off</span>
+        </label>
+        <figcaption><code>disabled</code></figcaption>
+    </figure>
+    <figure>
+        <label class="flex items-center gap-2 cursor-not-allowed">
+            <input type="checkbox" class="form-switch switch-primary" checked disabled>
+            <span>Disabled on</span>
+        </label>
+        <figcaption><code>checked disabled</code></figcaption>
+    </figure>
+</div>
