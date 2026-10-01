@@ -1,6 +1,7 @@
 {% set variants = {'': 'Solid', soft: 'Soft', outline: 'Outline'} %}
-{% set image = 'https://cdn.flyonui.com/fy-assets/components/card/image-5.png' %}
-{% set side_image = 'https://cdn.flyonui.com/fy-assets/components/card/image-7.png' %}
+{% set image = asset('files/quickstart/placeholders/images/img_png_1200x800.png') %}
+{% set side_image = asset('files/quickstart/placeholders/images/img_png_1000x1000.png') %}
+{% set glass_image = asset('bundles/digitaledingecontaokissquickstartdeveloper/showcase/glass-pattern.svg') %}
 
 <h2 class="section-headline"><span class="showcase-nav-icon showcase-icon-card" aria-hidden="true"></span>Card</h2>
 
@@ -111,7 +112,7 @@
 <div class="showcase-demo showcase-demo-stack">
     <figure>
         <div class="relative grid gap-4 p-6 overflow-hidden rounded-lg grid-cols-2 sm:grid-cols-4">
-            <img src="{{ image }}" alt="" class="absolute inset-0 size-full object-cover">
+            <img src="{{ glass_image }}" alt="" class="absolute inset-0 size-full object-cover">
             {% for color in ['']|merge(colors) %}
                 <div class="card card-sm card-glass{{ color ? ' card-' ~ color }}">
                     <div class="card-body">{{ color ? color|capitalize : 'Default' }}</div>
@@ -145,7 +146,7 @@
         <figure>
             <div class="card{{ layout ? ' card-' ~ layout }}">
                 <div class="card-media media">
-                    <figure><img src="{{ image }}" alt=""></figure>
+                    <figure><img src="{{ layout == 'media-background' ? glass_image : image }}" alt=""></figure>
                 </div>
                 <div class="card-body">
                     <h4 class="card-title">{{ label }}</h4>
