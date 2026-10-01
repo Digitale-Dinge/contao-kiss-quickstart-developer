@@ -70,7 +70,7 @@
     {% endfor %}
     {% for size, label in sizes %}
         <figure>
-            <button class="btn btn-secondary btn-square{{ size ? ' btn-' ~ size }}" aria-label="Close">
+            <button class="btn btn-primary btn-square{{ size ? ' btn-' ~ size }}" aria-label="Close">
                 {{ include('@Contao/kiss_component/media/_icon_include.html.twig', {icon: 'public/kiss_icons/svg/close.svg'}) }}
             </button>
             <figcaption><code>.btn-square{{ size ? '.btn-' ~ size }}</code></figcaption>
