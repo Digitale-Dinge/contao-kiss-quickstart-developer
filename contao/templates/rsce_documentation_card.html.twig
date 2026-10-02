@@ -1,0 +1,23 @@
+{% use '@Contao/kiss_component/card/_card_attributes.html.twig' %}
+{% use '@Contao/kiss_component/status/_alert.html.twig' %}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% set card_attributes = attrs(card_attributes|default).addClass(['card-primary', 'mt-16', 'mb-8']) %}
+{% set alert_attributes = attrs(alert_attributes|default).addClass(['mt-12', 'mb-6']) %}
+
+{% block content %}
+    {% if documentationLevel|default == 'subsection' %}
+        {% with {color: 'primary', variant: 'soft'} %}
+            {{ block('alert') }}
+        {% endwith %}
+    {% else %}
+        <div{{ block('card_attributes') }}>
+            <div class="card-body">
+                <h2 class="card-title">{{ title|default|insert_tag }}</h2>
+                {% if text|default %}
+                    <div class="rte"><p>{{ text|sanitize_html('contao')|insert_tag_raw }}</p></div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

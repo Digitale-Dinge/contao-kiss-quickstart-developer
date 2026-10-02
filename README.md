@@ -21,6 +21,7 @@ edits here are live there. Its theme build imports `layout/css/showcase-nav.pcss
 ## Removing the docs
 
 1. In the backend, delete the page "Documentation" with its subpages. Do this first: the `component_showcase` page
-   type and the page icons come from this bundle, and the pages fail to render without them.
+   type, the `documentation_card` content element and the page icons come from this bundle, and the pages fail to
+   render without them.
 2. `composer remove digitaledinge/contao-kiss-quickstart-developer` and drop its path repository from `composer.json`.
 3. Delete the two showcase `@import` lines from `layout/css/components/index.pcss` and run `npm run build`.

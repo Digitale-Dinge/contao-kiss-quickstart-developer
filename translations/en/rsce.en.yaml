@@ -1,0 +1,19 @@
+rsce:
+    field:
+        documentationLevel:
+            label:              Level
+            description:        Section as a large card or subsection as a notice box
+            options:
+                section:        Section
+                subsection:     Subsection
+
+    documentation_card:
+        label:                  Documentation card
+        description:            Heading of a section or subsection in the documentation
+        field:
+            title:
+                label:          Title
+                description:    The title of the card
+            text:
+                label:          Text
+                description:    The description below the title

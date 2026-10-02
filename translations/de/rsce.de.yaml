@@ -1,0 +1,19 @@
+rsce:
+    field:
+        documentationLevel:
+            label:              Ebene
+            description:        Abschnitt als große Karte oder Unterabschnitt als Hinweisbox
+            options:
+                section:        Abschnitt
+                subsection:     Unterabschnitt
+
+    documentation_card:
+        label:                  Dokumentations-Karte
+        description:            Überschrift eines Abschnitts oder Unterabschnitts in der Dokumentation
+        field:
+            title:
+                label:          Titel
+                description:    Der Titel der Karte
+            text:
+                label:          Text
+                description:    Die Beschreibung unter dem Titel
