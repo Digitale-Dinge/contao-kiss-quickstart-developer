@@ -13,7 +13,12 @@
     {% else %}
         <div{{ block('card_attributes') }}>
             <div class="card-body">
-                <h2 class="card-title">{{ title|default|insert_tag }}</h2>
+                <hgroup>
+                    {% if topline|default %}
+                        <p class="topline fixed-body-sm opacity-60 m-0">{{ topline|insert_tag }}</p>
+                    {% endif %}
+                    <h2 class="card-title m-0">{{ title|default|insert_tag }}</h2>
+                </hgroup>
                 {% if text|default %}
                     <div class="rte"><p>{{ text|sanitize_html('contao')|insert_tag_raw }}</p></div>
                 {% endif %}

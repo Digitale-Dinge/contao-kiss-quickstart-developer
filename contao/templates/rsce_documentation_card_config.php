@@ -12,6 +12,17 @@ return $configBuilder
         'standardFields' => ['cssID'],
     ])
     ->addSelectField('documentationLevel', ['section', 'subsection'])
+    ->addField('topline', [
+        'label' => true,
+        'inputType' => 'text',
+        'eval' => [
+            'tl_class' => 'w50 clr',
+        ],
+        'dependsOn' => [
+            'field' => 'documentationLevel',
+            'value' => 'section',
+        ],
+    ])
     ->addField('title', [
         'label' => true,
         'inputType' => 'text',

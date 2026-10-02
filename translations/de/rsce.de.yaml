@@ -11,6 +11,9 @@ rsce:
         label:                  Dokumentations-Karte
         description:            Überschrift eines Abschnitts oder Unterabschnitts in der Dokumentation
         field:
+            topline:
+                label:          Dachzeile
+                description:    Kleine Zeile über dem Titel, z. B. Herkunft und Elementtyp
             title:
                 label:          Titel
                 description:    Der Titel der Karte
