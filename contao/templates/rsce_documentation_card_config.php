@@ -12,6 +12,10 @@ return $configBuilder
         'standardFields' => ['cssID'],
     ])
     ->addSelectField('documentationLevel', ['section', 'subsection'])
+    ->addSelectField('kissStatus', ['', 'extended', 'styled', 'core'], ['tl_class' => 'w50'], [
+        'field' => 'documentationLevel',
+        'value' => 'subsection',
+    ])
     ->addField('topline', [
         'label' => true,
         'inputType' => 'text',
