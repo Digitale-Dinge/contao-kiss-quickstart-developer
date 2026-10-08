@@ -1,0 +1,203 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% set layout_showcase = kiss_layout_showcase({
+    contentWidth: 'base',
+    marginTop: 'two',
+    paddingTop: 'two',
+    marginBottom: 'two',
+    paddingBottom: 'two',
+}) %}
+
+{% set layout_showcase_attributes = attrs(layout_showcase_attributes|default)
+    .addClass('layout-showcase')
+    .set('data-layout-showcase', layout_showcase.fields|json_encode)
+    .set('data-layout-showcase-lang', {
+        loading: 'MSC.loadingData'|trans({}, 'contao_default'),
+        noResults: 'MSC.noResults'|trans({}, 'contao_default'),
+        noOptions: 'MSC.noOptions'|trans({}, 'contao_default'),
+        removeItem: 'MSC.removeItem'|trans({}, 'contao_default'),
+    }|json_encode)
+%}
+
+{% block content %}
+    {% set backend_document_start %}
+        <!doctype html>
+        <html lang="{{ app.request.locale|default('de') }}" data-color-scheme="light">
+            <head>
+                <meta charset="utf-8">
+                <script{{ attrs().setIfExists('nonce', csp_nonce('script-src')) }}>
+                    document.documentElement.dataset.colorScheme = parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                </script>
+                <link rel="stylesheet" href="{{ asset('css/choices.min.css', 'contao-components/choices') }}">
+                <link rel="stylesheet" href="{{ asset('backend.css', 'contao_core') }}">
+                <link rel="stylesheet" href="{{ asset('backend.css', 'system/themes/flexible') }}">
+                <link rel="stylesheet" href="{{ asset('dist/backend/contao-kiss.css', 'digitale_dinge_contao_kiss') }}">
+                <script src="{{ asset('js/choices.min.js', 'contao-components/choices') }}"></script>
+            </head>
+            <body style="background:transparent;overflow:hidden">
+                <div id="main" style="display:flow-root;background:var(--body-bg)">
+                    <div class="tl_formbody_edit">
+                        <fieldset class="tl_tbox">
+                            <legend><button type="button">{{ 'tl_content.layout_legend'|trans({}, 'contao_tl_content') }}</button></legend>
+                            <div class="widget-group">
+    {% endset %}
+
+    <div{{ layout_showcase_attributes }}>
+        <div class="container-base">
+            <div class="relative h-72 rounded-[var(--kiss-comp-card-border-radius-default,var(--radius-box,.5rem))]" data-layout-showcase-frame>
+                <iframe{{ attrs()
+                    .addClass(['absolute', 'inset-x-0', 'top-0', 'z-10', 'block', 'w-full', 'h-full', 'border-0'])
+                    .set('title', 'rsce.layout_showcase.settings'|trans({}, 'rsce'))
+                    .set('srcdoc', backend_document_start ~ layout_showcase.form ~ '</div></fieldset></div></div></body></html>')
+                }}></iframe>
+            </div>
+        </div>
+
+        <div class="relative flow-root mt-8" data-layout-showcase-stage>
+            {% for name in ['marginTop', 'paddingTop', 'paddingBottom', 'marginBottom'] %}
+                <div{{ attrs()
+                    .addClass(['absolute', 'flex', 'items-center', 'gap-2', 'overflow-hidden', 'px-3', 'text-xs', 'whitespace-nowrap', 'pointer-events-none'])
+                    .addClass('bg-status-warning-solid/30', name starts with 'margin')
+                    .addClass('bg-status-success-solid/30', name starts with 'padding')
+                    .set('data-layout-showcase-band', name)
+                    .set('hidden', true)
+                }}>
+                    <span>{{ layout_showcase.fields[name].label }}</span>
+                    <code data-layout-showcase-value></code>
+                </div>
+            {% endfor %}
+
+            {% set element_classes = [] %}
+            {% for name, field in layout_showcase.fields %}
+                {% set element_classes = element_classes|merge([field.classes[field.value]|default]) %}
+            {% endfor %}
+
+            <div{{ attrs()
+                .addClass(element_classes)
+                .addClass(['outline-1', 'outline-dashed', 'outline-neutral-border-strong'])
+                .set('data-layout-showcase-element', true)
+            }}>
+                <div class="py-10 text-center bg-primary-solid/15">
+                    <strong>{{ 'rsce.layout_showcase.content'|trans({}, 'rsce') }}</strong>
+                    <span class="block text-sm" data-layout-showcase-width></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script{{ attrs().setIfExists('nonce', csp_nonce('script-src')) }}>
+        document.querySelectorAll('[data-layout-showcase]:not([data-layout-showcase-ready])').forEach((showcase) => {
+            showcase.dataset.layoutShowcaseReady = '';
+
+            const fields = JSON.parse(showcase.dataset.layoutShowcase);
+            const values = Object.fromEntries(Object.entries(fields).map(([name, field]) => [name, field.value]));
+            const holder = showcase.querySelector('[data-layout-showcase-frame]');
+            const frame = holder.querySelector('iframe');
+            const stage = showcase.querySelector('[data-layout-showcase-stage]');
+            const element = showcase.querySelector('[data-layout-showcase-element]');
+            const width = showcase.querySelector('[data-layout-showcase-width]');
+            const bands = showcase.querySelectorAll('[data-layout-showcase-band]');
+            const classesOf = (name) => (fields[name].classes[values[name]] ?? '').split(' ').filter(Boolean);
+
+            const syncColorScheme = () => {
+                const dark = document.documentElement.classList.contains('dark');
+
+                frame.style.colorScheme = dark ? 'dark' : '';
+                frame.contentDocument?.documentElement.setAttribute('data-color-scheme', dark ? 'dark' : 'light');
+            };
+
+            syncColorScheme();
+            new MutationObserver(syncColorScheme).observe(document.documentElement, {attributes: true, attributeFilter: ['class']});
+
+            const draw = () => {
+                const style = getComputedStyle(element);
+                const top = element.offsetTop;
+                const bottom = top + element.offsetHeight;
+                const lineHeight = parseFloat(getComputedStyle(bands[0]).lineHeight);
+
+                bands.forEach((band) => {
+                    const name = band.dataset.layoutShowcaseBand;
+                    const size = parseFloat(style[name]);
+                    const offset = {marginTop: top - size, paddingTop: top, paddingBottom: bottom - size, marginBottom: bottom}[name];
+
+                    Object.assign(band.style, {
+                        top: `${offset}px`,
+                        left: `${element.offsetLeft}px`,
+                        width: `${element.offsetWidth}px`,
+                        height: `${size}px`,
+                    });
+                    band.hidden = 0 === size;
+                    band.querySelector('[data-layout-showcase-value]').textContent = `${classesOf(name).join(' ')} · ${size}px`;
+
+                    for (const label of band.children) {
+                        label.hidden = size < lineHeight;
+                    }
+                });
+
+                width.textContent = `${classesOf('contentWidth').join(' ') || '–'} · ${element.offsetWidth}px`;
+            };
+
+            const apply = (name, value) => {
+                if (!(name in fields)) {
+                    return;
+                }
+
+                element.classList.remove(...classesOf(name));
+                values[name] = value;
+                element.classList.add(...classesOf(name));
+                draw();
+            };
+
+            frame.addEventListener('load', () => {
+                const doc = frame.contentDocument;
+                const main = doc.getElementById('main');
+                const lang = JSON.parse(showcase.dataset.layoutShowcaseLang);
+
+                main.style.borderRadius = getComputedStyle(holder).borderTopLeftRadius;
+
+                const fit = () => {
+                    const dropdowns = [...doc.querySelectorAll('.choices.is-open .choices__list--dropdown')];
+                    const bottom = Math.max(main.offsetHeight, ...dropdowns.map((dropdown) => dropdown.getBoundingClientRect().bottom + 8));
+
+                    holder.style.height = `${main.offsetHeight}px`;
+                    frame.style.height = `${Math.ceil(bottom)}px`;
+                };
+
+                doc.querySelectorAll('[data-controller="contao--choices"] select').forEach((select) => {
+                    new frame.contentWindow.Choices(select, {
+                        shouldSort: false,
+                        duplicateItemsAllowed: false,
+                        allowHTML: false,
+                        removeItemButton: true,
+                        searchEnabled: select.options.length > 7,
+                        searchResultLimit: -1,
+                        appendGroupInSearch: true,
+                        classNames: {
+                            containerOuter: ['choices', ...Array.from(select.classList)],
+                        },
+                        fuseOptions: {
+                            includeScore: true,
+                            threshold: 0.4,
+                        },
+                        loadingText: lang.loading,
+                        noResultsText: lang.noResults,
+                        noChoicesText: lang.noOptions,
+                        removeItemLabelText: (value) => `${lang.removeItem} ${value}`,
+                        // The iframe grows downwards to fit an open dropdown, it cannot make room above
+                        position: 'bottom',
+                    });
+
+                    select.addEventListener('change', () => apply(select.name, select.value));
+                });
+
+                new frame.contentWindow.ResizeObserver(fit).observe(main);
+
+                const dropdownObserver = new frame.contentWindow.MutationObserver(fit);
+
+                doc.querySelectorAll('.choices').forEach((choices) => dropdownObserver.observe(choices, {attributes: true, attributeFilter: ['class']}));
+            });
+
+            new ResizeObserver(draw).observe(stage);
+        });
+    </script>
+{% endblock %}

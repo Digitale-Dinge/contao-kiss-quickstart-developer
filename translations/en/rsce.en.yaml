@@ -7,6 +7,20 @@ rsce:
                 section:        Section
                 subsection:     Subsection
 
+        kissStatus:
+            label:              KISS status
+            description:        What KISS adds to this element, shown as a badge above the title
+            options:
+                extended:       Extended
+                styled:         Styled
+                core:           Core
+
+    layout_showcase:
+        label:                  Layout showcase
+        description:            The layout fields from the backend with a live preview of the spacing and the content width
+        settings:               Layout fields from the backend
+        content:                Content
+
     documentation_card:
         label:                  Documentation card
         description:            Heading of a section or subsection in the documentation

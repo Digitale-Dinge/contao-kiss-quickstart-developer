@@ -7,6 +7,20 @@ rsce:
                 section:        Abschnitt
                 subsection:     Unterabschnitt
 
+        kissStatus:
+            label:              KISS-Status
+            description:        Was KISS bei diesem Element ergänzt, erscheint als Badge über dem Titel
+            options:
+                extended:       Erweitert
+                styled:         Gestylt
+                core:           Core
+
+    layout_showcase:
+        label:                  Layout-Showcase
+        description:            Die Layout-Felder aus dem Backend mit Live-Vorschau der Abstände und der Inhaltsbreite
+        settings:               Layout-Felder aus dem Backend
+        content:                Inhalt
+
     documentation_card:
         label:                  Dokumentations-Karte
         description:            Überschrift eines Abschnitts oder Unterabschnitts in der Dokumentation

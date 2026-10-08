@@ -6,3 +6,6 @@ services:
 
     DigitaleDinge\ContaoKissQuickstartDeveloper\Controller\:
         resource: '../src/Controller/'
+
+    DigitaleDinge\ContaoKissQuickstartDeveloper\Twig\:
+        resource: '../src/Twig/'
