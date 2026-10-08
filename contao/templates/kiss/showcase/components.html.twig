@@ -21,7 +21,7 @@
                 {% for name, component in components %}
                     {% set key = name|split('_', 3)|last %}
                     <li>
-                        <a href="#component_section_{{ loop.index }}" class="card card-sm card-hover">
+                        <a href="#component_section_{{ loop.index }}" class="card card-sm card-grow">
                             <div class="card-body">
                                 <span class="showcase-nav-icon showcase-icon-{{ key|replace({_: '-'}) }}" aria-hidden="true"></span>
                                 <strong>{{ key }}</strong>

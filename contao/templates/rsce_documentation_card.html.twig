@@ -36,6 +36,28 @@
                 {% if text|default %}
                     <div class="rte"><p>{{ text|sanitize_html('contao')|insert_tag_raw }}</p></div>
                 {% endif %}
+                {% if links|default %}
+                    <ol class="showcase-nav-cards showcase-section-links mt-6">
+                        {% for link in links %}
+                            <li>
+                                <a{{ attrs()
+                                    .addClass(['card', 'card-sm', 'card-soft', 'card-grow'])
+                                    .set('href', link.url|default|insert_tag|encode_email)
+                                    .set('target', '_blank', link.target|default)
+                                    .set('rel', 'noreferrer noopener', link.target|default)
+                                }}>
+                                    <div class="card-body">
+                                        <span{{ attrs()
+                                            .addClass(['showcase-nav-icon', 'showcase-icon-' ~ link.showcaseIcon|default('placeholder')])
+                                            .set('aria-hidden', 'true')
+                                        }}></span>
+                                        {{ link.linkTitle|default(link.url)|insert_tag }}
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
             </div>
         </div>
     {% endif %}

@@ -43,5 +43,15 @@ return $configBuilder
             'allowHtml' => true,
         ],
     ])
+    ->startList('links', null, null, 0)
+        ->addLinkFields()
+        ->addField('showcaseIcon', [
+            'label' => true,
+            'inputType' => 'text',
+            'eval' => [
+                'tl_class' => 'w50',
+            ],
+        ])
+    ->endList()
     ->build()
 ;

@@ -34,3 +34,6 @@ rsce:
             text:
                 label:          Text
                 description:    Die Beschreibung unter dem Titel
+            showcaseIcon:
+                label:          Icon
+                description:    Name des Icons aus layout/css/assets/showcase, z. B. headline. Leer zeigt einen Platzhalter.
