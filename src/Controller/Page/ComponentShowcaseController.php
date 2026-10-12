@@ -38,7 +38,7 @@ readonly class ComponentShowcaseController
             ->buildLayoutTemplate()
         ;
 
-        $layoutTemplate->setSlot('main', $this->twig->render(
+        $layoutTemplate->setSlot('main', $layoutTemplate->getSlot('main').$this->twig->render(
             '@Contao/kiss/showcase/components.html.twig', [
                 'components' => $this->getShowcaseTemplates(),
             ]

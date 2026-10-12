@@ -1,0 +1,58 @@
+{% use '@Contao/kiss_component/status/_alert.html.twig' %}
+{% use '@Contao/kiss_component/status/_badge.html.twig' %}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% set alert_attributes = attrs(alert_attributes|default).addClass('text-neutral-on-strong') %}
+
+{% block alert_content %}
+    <div class="showcase-matrix mt-4 mb-0">
+        <table>
+            <thead>
+                <tr>
+                    {% for column in ['bundle', 'installed', 'remote', 'status'] %}
+                        <th scope="col">{{ ('rsce.bundle_versions.' ~ column)|trans({}, 'rsce') }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, bundle in kiss_bundle_versions() %}
+                    {% set repository = 'https://github.com/Digitale-Dinge/' ~ name %}
+                    <tr>
+                        <th scope="row">{{ name }}</th>
+                        <td><a href="{{ repository }}/commit/{{ bundle.reference }}"><code>{{ bundle.reference|slice(0, 7) }}</code></a></td>
+                        <td>
+                            {% if bundle.remote %}
+                                <a href="{{ repository }}/commit/{{ bundle.remote }}"><code>{{ bundle.remote|slice(0, 7) }}</code></a>
+                            {% else %}
+                                –
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bundle.behind is null %}
+                                {% with {item: {text: 'rsce.bundle_versions.unknown'|trans({}, 'rsce'), variant: 'soft'}} %}
+                                    {{ block('badge') }}
+                                {% endwith %}
+                            {% elseif bundle.behind %}
+                                <a href="{{ repository }}/compare/{{ bundle.reference }}...main">
+                                    {% with {item: {text: 'rsce.bundle_versions.behind'|trans({'%count%': bundle.behind}, 'rsce'), color: 'warning', variant: 'soft'}} %}
+                                        {{ block('badge') }}
+                                    {% endwith %}
+                                </a>
+                            {% else %}
+                                {% with {item: {text: 'rsce.bundle_versions.current'|trans({}, 'rsce'), color: 'success', variant: 'soft'}} %}
+                                    {{ block('badge') }}
+                                {% endwith %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% with {title: 'rsce.bundle_versions.title'|trans({}, 'rsce'), color: 'primary', variant: 'soft'} %}
+        {{ block('alert') }}
+    {% endwith %}
+{% endblock %}

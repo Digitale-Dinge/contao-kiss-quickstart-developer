@@ -15,13 +15,17 @@ and does not offer them.
 ## Development
 
 The quickstart requires this repository as a Composer path repository (`../contao-kiss-quickstart-developer`), so
-edits here are live there. Its theme build imports `layout/css/showcase-nav.pcss` and `layout/css/showcase.pcss` from
-`layout/css/components/index.pcss`.
+edits here are live there. `layout/package.json` makes `layout/` the npm package
+`@digitaledinge/contao-kiss-quickstart-developer`, linked in the quickstart's `package.json` with
+`file:vendor/digitaledinge/contao-kiss-quickstart-developer/layout`. `layout/css/bundle.pcss` imports
+`@digitaledinge/contao-kiss-quickstart-developer/css`, which is `layout/css/index.pcss`.
 
 ## Removing the docs
 
 1. In the backend, delete the page "Documentation" with its subpages. Do this first: the `component_showcase` page
    type, the `documentation_card` content element and the page icons come from this bundle, and the pages fail to
    render without them.
-2. `composer remove digitaledinge/contao-kiss-quickstart-developer` and drop its path repository from `composer.json`.
-3. Delete the two showcase `@import` lines from `layout/css/components/index.pcss` and run `npm run build`.
+2. Delete the `@import "@digitaledinge/contao-kiss-quickstart-developer/css";` line from `layout/css/bundle.pcss`.
+3. `npm uninstall @digitaledinge/contao-kiss-quickstart-developer`.
+4. `composer remove digitaledinge/contao-kiss-quickstart-developer` and drop its path repository from `composer.json`.
+5. `npm run build`.

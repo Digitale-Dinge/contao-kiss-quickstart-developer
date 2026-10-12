@@ -21,6 +21,18 @@ rsce:
         settings:               Layout-Felder aus dem Backend
         content:                Inhalt
 
+    bundle_versions:
+        label:                  Bundle-Versionen
+        description:            Der installierte Commit jedes Digitale-Dinge-Bundles im Vergleich mit main auf GitHub
+        title:                  Installierte Versionen
+        bundle:                 Bundle
+        installed:              Installiert
+        remote:                 GitHub main
+        status:                 Status
+        current:                Aktuell
+        behind:                 '{1} 1 Commit hinter main|]1,Inf[ %count% Commits hinter main'
+        unknown:                Unbekannt
+
     documentation_card:
         label:                  Dokumentations-Karte
         description:            Überschrift eines Abschnitts oder Unterabschnitts in der Dokumentation

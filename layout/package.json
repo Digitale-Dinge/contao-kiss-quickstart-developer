@@ -1,0 +1,10 @@
+{
+    "name": "@digitaledinge/contao-kiss-quickstart-developer",
+    "license": "GPL-3.0-or-later",
+    "type": "module",
+    "exports": {
+        "./css": {
+            "style": "./css/index.pcss"
+        }
+    }
+}
